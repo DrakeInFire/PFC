@@ -15,6 +15,7 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.UserDao;
+import com.pfc.ballots.dao.UserLogedDao;
 import com.pfc.ballots.data.DataSession;
 import com.pfc.ballots.entities.Profile;
 import com.pfc.ballots.pages.Index;
@@ -65,15 +66,25 @@ public class UserList {
 	FactoryDao DB4O =FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
 	@Persist
 	UserDao userDao;
+	@Persist
+	UserLogedDao userLogedDao;
 	
 	public void setupRender()
 	{
 		editing=false;
 		userDao=DB4O.getUsuarioDao(datasession.getDBName());
 		users=userDao.RetrieveAllProfilesSortLastLog();
+		userLogedDao=DB4O.getUserLogedDao(datasession.getDBName());
 		editprof=null;
 	}
 	
+	public boolean isOwner()
+	{
+		if(user.isOwner())
+			return true;
+		else
+			return false;
+	}
 	public void onSelectedFromSave()
 	{
 		action=Actions.SAVE;
@@ -83,31 +94,37 @@ public class UserList {
 		action=Actions.CANCEL;
 	}
 	
-
 	void onSuccessFromEditForm()
 	{
+		boolean success=true;
 		if(request.isXHR())
 		{
 			if(action==Actions.SAVE)
 			{	
-				
 				user=lookforid(editprof.getId());
-				if(user.getEmail().toLowerCase().equals(editprof.getEmail().toLowerCase()))
+				if(!editprof.equals(user))
 				{
-					user.copy(editprof);
-					userDao.UpdateById(user);
-					editing=false;
-				}
-				else if(!userDao.isProfileRegistred(editprof.getEmail()))
-				{
-					user=lookforid(editprof.getId());
-					user.copy(editprof);
-					userDao.UpdateById(user);
-					editing=false;
+					if(!user.getEmail().equals(editprof.getEmail()))
+					{
+						if(userDao.isProfileRegistred(editprof.getEmail()))
+						{
+							nonavalible=true;
+							success=false;
+						}
+						
+					}
+					if(success)
+					{
+						userLogedDao.deleteByEmail(user.getEmail());
+						userDao.UpdateById(editprof);
+						user.copy(editprof);
+						editing=false;
+					}
+					
 				}
 				else
 				{
-					nonavalible=true;
+					editing=false;
 				}
 			}
 			if(action==Actions.CANCEL)
@@ -120,6 +137,7 @@ public class UserList {
 			System.out.println("SUCCESS");
 		}
 	}
+	
 	void onFailureFromEditForm()
 	{
 		
@@ -141,6 +159,7 @@ public class UserList {
 		if(request.isXHR())
 		{
 			editing=true;
+			nonavalible=false;
 			user=lookforid(id);
 			editprof=new Profile(user);
 			ajaxResponseRenderer.addRender(usergrid).addRender(editZone);
@@ -160,6 +179,7 @@ public class UserList {
 		if(request.isXHR())
 		{
 			userDao.deleteByEmail(email);
+			userLogedDao.deleteByEmail(email);
 			user=lookforemail(email);
 			users.remove(user);
 			ajaxResponseRenderer.addRender(usergrid);

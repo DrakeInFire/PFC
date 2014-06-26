@@ -56,6 +56,12 @@
 						<td>Actualizar Perfil</td>
 						<td><t:actionlink t:id="updateProfile" zone="^"><button>Actualizar</button></t:actionlink></td>
 					</tr>
+					<t:if test="mainOwner">
+						<tr>
+							<td>Asignar nuevo propietario</td>
+							<td><t:pageLink page="admin/changePrincipalOwner"><button>asignar</button></t:pageLink></td>
+						</tr>
+					</t:if>
 				</table>
 			</t:if>
 		</t:zone>

@@ -140,6 +140,35 @@ public class UserLogedDaoDB4O implements UserLogedDao{
 			close();
 		}
 	}
+	@SuppressWarnings("rawtypes")
+	public void deleteByEmail(String email)
+	{
+		open();
+		UserLoged look=new UserLoged();
+		look.setEmail(email);
+		UserLoged temp=null;
+		try
+		{
+			
+			ObjectSet result = DB.queryByExample(look);
+			while(result.hasNext())
+			{
+				temp=(UserLoged)result.next();
+				DB.delete(temp);
+				
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("[DB4O]ERROR: UserLoged could not be delete");
+		}
+		finally
+		{
+			close();
+		}
+	}
 	//**********************************************isLogedIn******************************************//
 	@SuppressWarnings("rawtypes")
 	public boolean isLogedIn(String idSession)

@@ -9,6 +9,7 @@
 		   
 		<t:zone t:id="newEmailZone" id="newEmailZone">
 			<t:if test="showNewZone">
+				<h1>NO HAY EMAIL</h1>
 				<t:form t:id="newForm" zone="^">
 					<t:if test="badCombination">La contraseña introducida no es valida para el email</t:if>
 					<table>

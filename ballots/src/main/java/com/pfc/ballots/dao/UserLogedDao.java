@@ -11,7 +11,9 @@ public interface UserLogedDao {
 	public void updateUserLoged(UserLoged userLoged);
 	public List<UserLoged> retrieveAll();
 	public void clearSessions(long timeOfSession);
+	
 	public void delete(String idSession);
+	public void deleteByEmail(String email);
 	public boolean isLogedIn(String idSession);
 
 }

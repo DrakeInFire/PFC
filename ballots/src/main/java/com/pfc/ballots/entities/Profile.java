@@ -35,6 +35,7 @@ public class Profile {
 	{
 		this.admin=old.isAdmin();
 		this.maker=old.isMaker();
+		this.owner=old.isOwner();
 		this.id=old.getId();
 		this.email=old.email;
 		this.password=old.getPassword();
@@ -60,12 +61,15 @@ public class Profile {
 	
 	@NonVisual
 	private String id;
+	//@NonVIsual
+	private boolean owner;
 	//this will also be the username
 	@Validate("required,regexp=^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
 	private String email;
 	//Encrypted password of the user
 	@Validate("required")
 	private String password;
+	
 	
 	private String plainPass;
 
@@ -222,6 +226,106 @@ public class Profile {
 		this.country=old.getCountry();
 		this.regDate=old.getRegDate();
 	}
+	public boolean isOwner() {
+		return owner;
+	}
+	public void setOwner(boolean owner) {
+		this.owner = owner;
+	}
+	/**
+	 * Requiered fields must be filled(no compare password) 
+	 */
 	
+	public boolean equals(Profile profile)
+	{
+		if (profile==null)
+		{
+			return false;
+		}
+		if(!this.getId().equals(profile.getId()))
+		{
+			return false;
+		}
+		
+		if(this.isAdmin()!=profile.isAdmin())
+		{
+			return false;
+		}
+		
+		if(this.isMaker()!=profile.isMaker())
+		{
+			return false;
+		}
+		
+		if(!this.getEmail().equals(profile.getEmail()))
+		{
+			return false;
+		}
+		
+		if(!this.getFirstName().equals(profile.getFirstName()))
+		{
+			return false;
+		}
+		if(!this.getLastName().equals(profile.getLastName()))
+		{
+			return false;
+		}
+		
+		//University Check
+		if(this.getUniversity()==null && profile.getUniversity()==null)
+		{
+			//Must be empty, its a check to avoid not null exception
+		}			
+		else if(this.getUniversity()==null && profile.getUniversity()!=null)
+		{
+			return false;
+		}
+		else if(this.getUniversity()!=null && profile.getUniversity()==null)
+		{
+			return false;
+		}
+		else if(!this.getUniversity().equals(profile.getUniversity()))
+		{
+			return false;
+		}
+		
+		//City Check
+		
+		if(this.getCity()==null && profile.getCity()==null)
+		{
+			//Must be empty, its a check to avoid not null exception
+		}			
+		else if(this.getCity()==null && profile.getCity()!=null)
+		{
+			return false;
+		}
+		else if(this.getCity()!=null && profile.getCity()==null)
+		{
+			return false;
+		}
+		else if(!this.getCity().equals(profile.getCity()))
+		{
+			return false;
+		}
 
+		//Country check
+		if(this.getCountry()==null && profile.getCountry()==null)
+		{
+			//Must be empty, its a check to avoid not null exception
+		}			
+		else if(this.getCountry()==null && profile.getCountry()!=null)
+		{
+			return false;
+		}
+		else if(this.getCountry()!=null && profile.getCountry()==null)
+		{
+			return false;
+		}
+		else if(!this.getCountry().equals(profile.getCountry()))
+		{
+			return false;
+		}
+		
+		return true;
+	}
 }

@@ -5,12 +5,16 @@
 			<t:grid source="users" reorder="email,admin,maker" row="user" add="id,Edit,Delete" exclude="password">
 				<p:editcell>
 					<t:if test="!editing">
-						<t:actionlink t:id="editbut" zone="^" context="user.id"><button>edit</button></t:actionlink>
+						<t:if test="!owner">
+							<t:actionlink t:id="editbut" zone="^" context="user.id"><button>edit</button></t:actionlink>
+						</t:if>
 					</t:if>
 				</p:editcell>
 				<p:deleteCell>
 					<t:if test="!editing">
-						<t:actionlink t:id="deleteuser" context="user.email" zone="^"><button>Delete</button></t:actionlink>
+						<t:if test="!owner">
+							<t:actionlink t:id="deleteuser" context="user.email" zone="^"><button>Delete</button></t:actionlink>
+						</t:if>
 					</t:if>
 				</p:deleteCell>
 				<p:idcell>
@@ -19,6 +23,8 @@
 				
 			</t:grid>
 		</t:zone>
+		
+		
 		<t:zone t:id="editZone" id="editZone">
 			<t:if test="editing">
 				<t:form t:id="editForm" zone="^">

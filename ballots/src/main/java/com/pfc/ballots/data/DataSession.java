@@ -12,6 +12,7 @@ import com.pfc.ballots.dao.EmailAccountDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.UserLogedDao;
 import com.pfc.ballots.entities.Company;
+import com.pfc.ballots.entities.EmailAccount;
 import com.pfc.ballots.entities.Profile;
 import com.pfc.ballots.util.Mail;
 import com.pfc.ballots.util.UUID;
@@ -23,6 +24,7 @@ public class DataSession {
 	private String DBName;
 	private String company;
 	private String idSession;
+	private boolean owner;
 	private String id;//registred user id
 	private String email;
 	private Date logDate;
@@ -117,7 +119,12 @@ public class DataSession {
 	public void setIdSession(String idSession) {
 		this.idSession = idSession;
 	}
-
+	public boolean isOwner() {
+		return owner;
+	}
+	public void setOwner(boolean owner) {
+		this.owner = owner;
+	}
 	
 
 	 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,11 +132,13 @@ public class DataSession {
    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
+	
 	//Normal login
 	public void login(Profile profile)	
 	{
 		company="main";
 		setIdSession(UUID.generate());
+		setOwner(profile.isOwner());
 		id=profile.getId();
 		email=profile.getEmail();
 		maker=profile.isMaker();
@@ -145,6 +154,7 @@ public class DataSession {
 	{
 		setIdSession(UUID.generate());
 		this.company=company.getCompanyName();
+		owner=profile.isOwner();
 		id=profile.getId();
 		email=profile.getEmail();
 		maker=profile.isMaker();
@@ -170,6 +180,7 @@ public class DataSession {
 		email=null;
 		loged=false;
 		lgdDao=null;
+		owner=false;
 		setIdSession(null);
 		
 	}
@@ -216,7 +227,11 @@ public class DataSession {
 				{
 					if(isAdmin())
 					{
-			
+						EmailAccount account=emailDao.getAccount();
+						if(account==null)
+						{
+							return 2;
+						}
 						if(isMainAdmin() && !Mail.checkAccount(emailDao.getAccount()))
 						{
 							return 2;
@@ -243,14 +258,21 @@ public class DataSession {
 	 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////// SESSION UTILS //////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public boolean isMainOwner()
+	{
+		if(company.equals("main") && owner==true)
+		{
+			return true;
+		}
+		return false;
+	}
 	public boolean isCompanyOwner()
 	{
-		Company temp=companyDao.getCompanyByName(company);
-		if(temp==null)
+		if(company.equals("main"))
 		{
 			return false;
 		}
-		if(temp.getIdAdmin().equals(id))
+		else if(owner)
 		{
 			return true;
 		}
@@ -312,5 +334,6 @@ public class DataSession {
 	{
 		return Mail.checkAccount(emailDao.getAccount());
 	}
+
 
 }

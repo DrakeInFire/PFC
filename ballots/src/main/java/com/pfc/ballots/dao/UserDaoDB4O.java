@@ -361,8 +361,77 @@ public class UserDaoDB4O implements UserDao{
 		return profiles;
 	}
 	
+	//************************************************** get/set-Owner***************************************************//
+	public Profile getOwner()
+	{
 
-	
+		open();
+		try
+		{
+			Profile temp=new Profile();
+			temp.setOwner(true);
+			@SuppressWarnings("rawtypes")
+			ObjectSet result=DB.queryByExample(temp);
+			
+			if(result.hasNext())
+			{
+				System.out.println("[DB4O]Id Profile was retrieved");
+				return ((Profile)result.next());
+			}
+			else
+			{
+				System.out.println("[DB4O]There isn't owner Database");
+				return null;
+			}
+			
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+		return null;
+	}
+	@SuppressWarnings("rawtypes")
+	public void setOwner(String idNewOwner)
+	{
+		open();
+		try
+		{
+			Profile temp=new Profile();
+			temp.setOwner(true);
+			
+			ObjectSet result=DB.queryByExample(temp);
+			if(result.hasNext())
+			{
+				Profile owner=(Profile)result.next();
+				Profile newOwner=getById(idNewOwner);
+				if(owner!=null && newOwner!=null)
+				{
+					DB.delete(owner);
+					DB.delete(newOwner);
+					owner.setOwner(false);
+					newOwner.setOwner(true);
+					newOwner.setAdmin(true);
+					DB.store(owner);
+					DB.store(newOwner);
+				}
+				
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+	}
 	
 	//***************************************************IsRegistred************************************************//
 	
@@ -475,7 +544,24 @@ public class UserDaoDB4O implements UserDao{
 		}
 		
 	}
-	
+	public void deleteById(String id)
+	{
+		Profile temp=null;
+		open();
+		try
+		{
+			temp=getById(id);
+			DB.delete(temp);	
+					
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally{
+			close();
+		}
+		
+	}
 	
 	
 	//************************************************Util(without open or close)***********************************//

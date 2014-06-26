@@ -1,15 +1,145 @@
 <html xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
    
 	<t:border xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
-		<t:zone t:id="usergrid" id="usergrid">	
-			<t:grid source="users" row="user" add="Delete">
-				<p:deleteCell>
-						<t:actionlink t:id="deleteuser" context="user.email" zone="^">Delete</t:actionlink>
-				</p:deleteCell>
-			</t:grid>
-		</t:zone>
-	</t:border>
 	
+		<!--  
+	  	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////// GRID ZONE //////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 		-->
 		
-			
+		<t:zone t:id="userGridZone" id="userGridZone">	
+			<t:if test="!showSure">
+				<t:grid source="users" row="user" add="Edit,Delete,makeOwner" exclude="password,plainpass,owner,lastlog">
+					<p:deleteCell>
+						<t:if test="!editing">
+							<t:if test="!owner">
+								<t:actionlink t:id="deleteuser" context="user.email" zone="^"><button>Delete</button></t:actionlink>
+							</t:if>
+						</t:if>
+					</p:deleteCell>
+					<p:editCell>
+						<t:if test="!editing">
+							<t:if test="!owner">
+								<t:actionlink t:id="editbut" context="user.id" zone="^"><button>Edit</button></t:actionlink>
+							</t:if>
+						</t:if>
+					</p:editCell>
+					<p:makeOwnercell>
+						<t:if test="!editing">
+							<t:if test="!owner">
+								<t:actionlink t:id="makeOwnerBut" context="user.id" zone="^"><button>makeOwner</button></t:actionlink>
+							</t:if>
+						</t:if>
+					</p:makeOwnercell>
+				</t:grid>
+			</t:if>
+		</t:zone>
+		
+			<!--  
+	  	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////// AREUSURE ZONE //////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 		-->	
+		
+		<t:zone t:id="areuSureZone" id="areuSureZone">
+			<t:if test="showSure">
+				Esta seguro de hacer a <b>${toCheck.email }</b> propietario de <b>${companyName }</b><br/>
+				<t:actionlink t:id="successChangeOwnerBut" t:zone="^"><button>SI</button></t:actionlink>
+				<t:actionlink t:id="cancelChangeOwnerBut" t:zone="^"><button>NO</button></t:actionlink>
+			</t:if>
+		</t:zone>
+		<!--  
+	  	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////// EDIT ZONE //////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 		-->		
+
+		<t:zone t:id="editZone" id="editZone">
+			<t:if test="editing">
+				<t:form t:id="editForm" zone="^">
+					<table>
+						<tr>
+							<td>
+								<label>Email</label>
+							</td>
+							<td>
+								<t:textfield t:id="emailfield" t:value="editprof.email"/>
+							</td>
+							<td>
+							<t:if test="nonavalible">
+								email en uso
+							</t:if>
+						</td>
+						</tr>
+						<tr>
+						<td>
+							<label>Admin</label>
+						</td>
+						<td>
+							<t:checkbox t:id="adminbox" t:value="editprof.admin"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Maker</label>
+						</td>
+						<td>
+							<t:checkbox t:id="makerbox" t:value="editprof.maker"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>FirstName</label>
+						</td>
+						<td>
+							<t:textfield t:id="firstnamefield" t:value="editprof.firstname"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>LastName</label>
+						</td>
+						<td>
+							<t:textfield t:id="lastnamefield" t:value="editprof.lastname"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>University</label>
+						</td>
+						<td>
+							<t:textfield t:id="universityfield" t:value="editprof.university"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>City</label>
+						</td>
+						<td>
+							<t:textfield t:id="cityfield" t:value="editprof.city"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Country</label>
+						</td>
+						<td>
+							<t:textfield t:id="countryfield" t:value="editprof.country"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label><input t:type="submit" t:id="save" value="Save"/></label>
+						</td>
+						<td>
+							<input t:type="submit" t:id="cancel" value="Cancel" t:mode="cancel"/>
+						</td>
+					</tr>
+					</table>
+				</t:form>
+			</t:if>
+		</t:zone>	
+	
+	</t:border>
 </html>

@@ -16,11 +16,13 @@ public interface UserDao {
 	public List<Profile> getProfileById(List<String> id);
 	public String getEmailById(String Id);
 	public String getIdByEmail(String email);
-	
+	public void setOwner(String idNewOwner);
+	public Profile getOwner();
 	
 	public void UpdateByEmail(String Email,Profile updatedProfile);
 	public void UpdateByEmail(Profile updatedProfile);
 	public void UpdateById(Profile updatedProfile);
 	public void deleteByEmail(String Email);
+	public void deleteById(String id);
 	public boolean isProfileRegistred(String Email);
 }
