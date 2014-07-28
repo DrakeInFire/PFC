@@ -104,9 +104,8 @@ public class ForgottenCompanyPassword {
 					EmailAccount account =emailAccountDao.getAccount();
 					String newPass=PasswordGenerator.getPassword();
 					profile.setPassword(Encryption.getStringMessageDigest(newPass, Encryption.SHA1));
-					Mail mail=new Mail(account,email);
 					String msg="Su nueva contraseña es :"+newPass;
-					if(mail.sendMail("NewPass", msg))
+					if(Mail.sendMail(account.getEmail(), account.getPassword(), email, "NewPass:noReply", msg))
 					{
 						badSend=false;
 						userDao.UpdateByEmail(profile);

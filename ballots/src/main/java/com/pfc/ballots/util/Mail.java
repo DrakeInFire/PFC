@@ -10,35 +10,8 @@ import javax.mail.internet.MimeMessage;
 
 import com.pfc.ballots.entities.EmailAccount;
 
-/**
- * Mail Class that handles the sending of emails
- * 
- * @version 2.0, JUN-2014
- * @author Mario Temprano Martin
- */
-
-//La llamada sería
-//Mail miMail = new Mail ("emailemisor@gmail.com", "passEmisor","emailreceptor@gmail.com");
-//miMail.sendMail("Asunto", "cuerpo del mensaje");
-
-
 public class Mail {
-
-	private String emailEmisor;
-	private String passEmisor;
-	private String emailReceptor;
-
-	private Properties props;
-
-	// emisor: correo del emisor -> soyemisor@gmail.com
-	// pass emisor: pass del emisor
-	// receptor: correo del receptor -> soyreceptor@gmail.com
-	// props: propiedades de la conexión con el proovedor de correo del emisor
-
 	
-	
-	//Constructor: para configurar emisor, receptor y modo de conexión con
-	// el servidor de correo, en este caso gmail
 	
 	/** 
      * Sends an email
@@ -46,210 +19,181 @@ public class Mail {
      * @param emailEmisor Sender's email
      * @param passEmisor Sender's email password
      * @param emailReceptor Receiver's email
-     * 
+     * @param asunto - subject of the mail
+     * @param mensaje - message of the mail
      */	
-	public Mail(String emailEmisor, String passEmisor, String emailReceptor) {
+	public static boolean sendMail(String emailEmisor,String passEmisor,String emailReceptor,String asunto,String mensaje)
+	{
+		 Properties props=new Properties();
+		 
+			// Nombre del host de correo, en este caso smtp.gmail.com
+			props.setProperty("mail.smtp.host", "smtp.gmail.com");
 
-		this.emailEmisor = emailEmisor;
-		this.passEmisor = passEmisor;
-		this.emailReceptor = emailReceptor;
+			// true or false si TLS está disponible
+			props.setProperty("mail.smtp.starttls.enable", "true");
 
-		this.props = new Properties();
+			// Puerto de gmail para el envío de correos
+			props.setProperty("mail.smtp.port", "587");
 
-		// Nombre del host de correo, en este caso smtp.gmail.com
-		props.setProperty("mail.smtp.host", "smtp.gmail.com");
+			// correo del emisor
+			props.setProperty("mail.smtp.user", emailEmisor);
 
-		// true or false si TLS está disponible
-		props.setProperty("mail.smtp.starttls.enable", "true");
+			// Si requiere o no usuario y password para conectarse.
+			props.setProperty("mail.smtp.auth", "true");
+		 
+		
+			try
+			{
+				// Creamos nuestra sesión del correo
+				Session session = Session.getDefaultInstance(props);
 
-		// Puerto de gmail para el envío de correos
-		props.setProperty("mail.smtp.port", "587");
+				// Construimos el mensaje
+				MimeMessage message = new MimeMessage(session);
 
-		// correo del emisor
-		props.setProperty("mail.smtp.user", emailEmisor);
+				// Emisor
+				message.setFrom(new InternetAddress(emailEmisor));
 
-		// Si requiere o no usuario y password para conectarse.
-		props.setProperty("mail.smtp.auth", "true");
+				// Receptor
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailReceptor));
 
-	}
-	public Mail(EmailAccount emailAccount, String emailReceptor) {
+				// Asunto del mensaje
+				message.setSubject(asunto);
+				
+				// Cuerpo del mensaje
+				//message.setText(mensaje);
+				message.setText(mensaje,"ISO-8859-1","html");//now we can user stuff like <br/> in the email text
+				
 
-		this.emailEmisor = emailAccount.getEmail();
-		this.passEmisor = emailAccount.getPassword();
-		this.emailReceptor = emailReceptor;
+				// Para enviar el mensaje
+				Transport t = session.getTransport("smtp");
+	 
+				// Credenciales email emisor
+				t.connect(emailEmisor,passEmisor);
+				
+				// Enviamos el mensaje
+				t.sendMessage(message, message.getAllRecipients());
 
-		this.props = new Properties();
+				// Cerramos la conexión
+				t.close();
 
-		// Nombre del host de correo, en este caso smtp.gmail.com
-		props.setProperty("mail.smtp.host", "smtp.gmail.com");
+			}
+			catch (Exception e)
+			{	
+				return false;
+			}
 
-		// true or false si TLS está disponible
-		props.setProperty("mail.smtp.starttls.enable", "true");
-
-		// Puerto de gmail para el envío de correos
-		props.setProperty("mail.smtp.port", "587");
-
-		// correo del emisor
-		props.setProperty("mail.smtp.user", emailEmisor);
-
-		// Si requiere o no usuario y password para conectarse.
-		props.setProperty("mail.smtp.auth", "true");
-
-	}
-
-	/** 
-     * Sends the email
-     * 
-     * @param asunto Email subject
-     * @param mensaje Message
-     * @return boolean True if everything goes fine, false otherwise
-     * 
-     */	
-	public boolean sendMail(String asunto, String mensaje) {
-
-		try {
-
-			// Creamos nuestra sesión del correo
-			Session session = Session.getDefaultInstance(props);
-
-			// Construimos el mensaje
-			MimeMessage message = new MimeMessage(session);
-
-			// Emisor
-			message.setFrom(new InternetAddress(emailEmisor));
-
-			// Receptor
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailReceptor));
-
-			// Asunto del mensaje
-			message.setSubject(asunto);
+			return true;	
 			
-			// Cuerpo del mensaje
-			//message.setText(mensaje);
-			message.setText(mensaje,"ISO-8859-1","html");//now we can user stuff like <br/> in the email text
-			
-
-			// Para enviar el mensaje
-			Transport t = session.getTransport("smtp");
- 
-			// Credenciales email emisor
-			t.connect(emailEmisor,passEmisor);
-			
-			// Enviamos el mensaje
-			t.sendMessage(message, message.getAllRecipients());
-
-			// Cerramos la conexión
-			t.close();
-
-		} catch (Exception e) {
-			
-			return false;
 		}
-
-		return true;
-	}
 	//Checks if is a gmail account
-	public static boolean isValidEmail(String email)
-	{
-		String [] temp=email.split("@");
-		if(temp[1].equals("gmail.com"))
+		public static boolean isValidEmail(String email)
 		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	public static boolean checkAccount(String email,String pass)
-	{
-		if(isValidEmail(email))
-		{
-			Properties properties=new Properties();
-			
-			// Nombre del host de correo, en este caso smtp.gmail.com
-			properties.setProperty("mail.smtp.host", "smtp.gmail.com");
-
-			// true or false si TLS está disponible
-			properties.setProperty("mail.smtp.starttls.enable", "true");
-
-			// Puerto de gmail para el envío de correos
-			properties.setProperty("mail.smtp.port", "587");
-
-			// correo del emisor
-			properties.setProperty("mail.smtp.user", email);
-
-			// Si requiere o no usuario y password para conectarse.
-			properties.setProperty("mail.smtp.auth", "true");
-			try {
-
-				// Creamos nuestra sesión del correo
-				Session session = Session.getDefaultInstance(properties);
-
-				// Para enviar el mensaje
-				Transport t = session.getTransport("smtp");
-	 
-				// Credenciales email emisor
-				t.connect(email,pass);
-
-				// Cerramos la conexión
-				t.close();
-
-			} catch (Exception e) {
-				
+			String [] temp=email.split("@");
+			if(temp[1].equals("gmail.com"))
+			{
+				return true;
+			}
+			else
+			{
 				return false;
 			}
-			return true;
 		}
-		else
+		
+		public static boolean checkAccount(String email,String pass)
 		{
-			return false;
-		}
-	}
-	
-	public static boolean checkAccount(EmailAccount emailAccount)
-	{
-		if(isValidEmail(emailAccount.getEmail()))
-		{
-			Properties properties=new Properties();
-			
-			// Nombre del host de correo, en este caso smtp.gmail.com
-			properties.setProperty("mail.smtp.host", "smtp.gmail.com");
-
-			// true or false si TLS está disponible
-			properties.setProperty("mail.smtp.starttls.enable", "true");
-
-			// Puerto de gmail para el envío de correos
-			properties.setProperty("mail.smtp.port", "587");
-
-			// correo del emisor
-			properties.setProperty("mail.smtp.user", emailAccount.getEmail());
-
-			// Si requiere o no usuario y password para conectarse.
-			properties.setProperty("mail.smtp.auth", "true");
-			try {
-
-				// Creamos nuestra sesión del correo
-				Session session = Session.getDefaultInstance(properties);
-
-				// Para enviar el mensaje
-				Transport t = session.getTransport("smtp");
-	 
-				// Credenciales email emisor
-				t.connect(emailAccount.getEmail(),emailAccount.getPassword());
-
-				// Cerramos la conexión
-				t.close();
-
-			} catch (Exception e) {
+			if(isValidEmail(email))
+			{
+				Properties properties=new Properties();
 				
+				// Nombre del host de correo, en este caso smtp.gmail.com
+				properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+
+				// true or false si TLS está disponible
+				properties.setProperty("mail.smtp.starttls.enable", "true");
+
+				// Puerto de gmail para el envío de correos
+				properties.setProperty("mail.smtp.port", "587");
+
+				// correo del emisor
+				properties.setProperty("mail.smtp.user", email);
+
+				// Si requiere o no usuario y password para conectarse.
+				properties.setProperty("mail.smtp.auth", "true");
+				try {
+
+					// Creamos nuestra sesión del correo
+					Session session = Session.getDefaultInstance(properties);
+
+					// Para enviar el mensaje
+					Transport t = session.getTransport("smtp");
+		 
+					// Credenciales email emisor
+					t.connect(email,pass);
+
+					// Cerramos la conexión
+					t.close();
+
+				} catch (Exception e) {
+					
+					return false;
+				}
+				return true;
+			}
+			else
+			{
 				return false;
 			}
-			return true;
 		}
-		else
+		
+		public static boolean checkAccount(EmailAccount emailAccount)
 		{
-			return false;
+			if(emailAccount==null)
+			{
+				return false;
+			}
+			if(isValidEmail(emailAccount.getEmail()))
+			{
+				Properties properties=new Properties();
+				
+				// Nombre del host de correo, en este caso smtp.gmail.com
+				properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+
+				// true or false si TLS está disponible
+				properties.setProperty("mail.smtp.starttls.enable", "true");
+
+				// Puerto de gmail para el envío de correos
+				properties.setProperty("mail.smtp.port", "587");
+
+				// correo del emisor
+				properties.setProperty("mail.smtp.user", emailAccount.getEmail());
+
+				// Si requiere o no usuario y password para conectarse.
+				properties.setProperty("mail.smtp.auth", "true");
+				try {
+
+					// Creamos nuestra sesión del correo
+					Session session = Session.getDefaultInstance(properties);
+
+					// Para enviar el mensaje
+					Transport t = session.getTransport("smtp");
+		 
+					// Credenciales email emisor
+					t.connect(emailAccount.getEmail(),emailAccount.getPassword());
+
+					// Cerramos la conexión
+					t.close();
+					return true;
+					
+				} catch (Exception e) {
+					
+					return false;
+				}
+			
+			}
+			else
+			{
+				return false;
+			}
 		}
-	}
+
 }

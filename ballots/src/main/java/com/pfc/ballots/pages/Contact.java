@@ -8,7 +8,7 @@ import org.apache.tapestry5.beaneditor.Width;
 import com.pfc.ballots.dao.EmailAccountDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.entities.EmailAccount;
-import com.pfc.ballots.util.Mail2;
+import com.pfc.ballots.util.Mail;
 
 public class Contact
 {
@@ -26,7 +26,7 @@ public class Contact
 	{
 		emailAccountDao=DB4O.getEmailAccountDao();
 		emailAccount=emailAccountDao.getAccount();
-		if(Mail2.checkAccount(emailAccount))
+		if(Mail.checkAccount(emailAccount))
 		{
 			showEmailProblem=false;
 		}
@@ -53,9 +53,9 @@ public class Contact
 	{
 		String asunto="Contact: "+remitente;
 		String asuntoRemit="NoReply-copia: "+emailAccount.getEmail();
-		if(Mail2.sentMail(emailAccount.getEmail(), emailAccount.getPassword(), emailAccount.getEmail(), asunto, text))
+		if(Mail.sendMail(emailAccount.getEmail(), emailAccount.getPassword(), emailAccount.getEmail(), asunto, text))
 		{
-			Mail2.sentMail(emailAccount.getEmail(), emailAccount.getPassword(), remitente, asuntoRemit, text);
+			Mail.sendMail(emailAccount.getEmail(), emailAccount.getPassword(), remitente, asuntoRemit, text);
 			System.out.println("ENVIADO");
 		}
 		else

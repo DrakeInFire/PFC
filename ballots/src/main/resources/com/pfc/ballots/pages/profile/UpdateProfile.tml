@@ -1,8 +1,0 @@
-<html xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-   
-	<t:border xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
-
-	 <t:actionlink t:id="sendEmail"><button>send</button></t:actionlink>
-	<t:actionlink t:id="checkEmail"><button>check</button></t:actionlink>
-	</t:border>
-</html>

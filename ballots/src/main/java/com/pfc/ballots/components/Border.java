@@ -39,7 +39,6 @@ import com.pfc.ballots.pages.ballot.ShowBallotAdmin;
 import com.pfc.ballots.pages.profile.CreateProfile;
 import com.pfc.ballots.pages.profile.ProfileByFile;
 import com.pfc.ballots.pages.profile.ShowProfile;
-import com.pfc.ballots.pages.profile.UpdateProfile;
 import com.pfc.ballots.pages.users.CompanyLogIn;
 import com.pfc.ballots.pages.users.LogIn;
 
