@@ -275,7 +275,7 @@ public class ShowBallotAdmin {
 					else
 					{
 						System.out.println("NOT NULL");
-						//kemeny.calcularKemeny();
+						kemeny.calcularKemeny();
 						kemenyDao.update(kemeny);
 						kemenys=kemenyDao.retrieveAll();
 					}

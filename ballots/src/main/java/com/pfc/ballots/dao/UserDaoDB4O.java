@@ -1,6 +1,6 @@
 package com.pfc.ballots.dao;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.db4o.Db4oEmbedded;
@@ -92,7 +92,7 @@ public class UserDaoDB4O implements UserDao{
 	@SuppressWarnings("rawtypes")
 	public List<Profile> getByExample(Profile example)
 	{
-		List<Profile> list=new ArrayList<Profile>();
+		List<Profile> list=new LinkedList<Profile>();
 		open();
 		try
 		{
@@ -207,7 +207,7 @@ public class UserDaoDB4O implements UserDao{
 	public List<Profile> getProfileById(List<String> id)
 	{
 		open();
-		List<Profile> list=new ArrayList<Profile>();
+		List<Profile> list=new LinkedList<Profile>();
 		try
 		{
 			for(String current:id)
@@ -295,13 +295,30 @@ public class UserDaoDB4O implements UserDao{
 		}
 		return null;
 	}
+	public List<Profile> getNoMailProfiles()
+	{
+		List<Profile> all=RetrieveAllProfiles();
+		List<Profile> nomail=new LinkedList<Profile>();
+	
+		for(Profile temp:all)
+		{
+			if(temp.getEmail().contains("@nomail"))
+			{
+				nomail.add(temp);
+			}
+		
+		}
+	
+		
+		return nomail;
+	}
 	
 	//*******************************************Retrieves all****************************************//
 	
 	@SuppressWarnings("rawtypes")
 	public List<Profile> RetrieveAllProfiles() {
 		
-		List<Profile> profiles=new ArrayList<Profile>();
+		List<Profile> profiles=new LinkedList<Profile>();
 		open();
 		try
 		{
@@ -331,7 +348,7 @@ public class UserDaoDB4O implements UserDao{
 	}
 	@SuppressWarnings("rawtypes")
 	public List<Profile> RetrieveAllProfilesSortLastLog() {
-		List<Profile> profiles=new ArrayList<Profile>();
+		List<Profile> profiles=new LinkedList<Profile>();
 		open();
 		try
 		{
@@ -435,13 +452,13 @@ public class UserDaoDB4O implements UserDao{
 	
 	//***************************************************IsRegistred************************************************//
 	
-	public boolean isProfileRegistred(String Email)
+	public boolean isProfileRegistred(String email)
 	{
 		boolean temp=true;
 		open();
 		try
 		{
-			temp=testEmail(Email);
+			temp=testEmail(email);
 			
 		}
 		catch(Exception e)
@@ -454,6 +471,31 @@ public class UserDaoDB4O implements UserDao{
 			close();
 		}
 		return temp;
+	}
+	public boolean isNoMailRegistred(String email)
+	{
+		boolean isRegistred=true;
+		if(email.contains("@nomail"))
+		{
+			open();
+			try
+			{
+				isRegistred=testEmail(email);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				close();
+			}
+		}
+		else
+		{
+			isRegistred=false;
+		}
+		return isRegistred;
 	}
 	
 	//*********************************************** Updates ************************************************************//

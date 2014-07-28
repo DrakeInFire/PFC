@@ -133,7 +133,7 @@ public class Kemeny {
 			return results.get(permutation);
 		}
 	}
-	/*public void CalcularKemeny()
+	public void calcularKemeny()
 	{
 		if(votes==null ||options==null || winner==null)
 		{
@@ -143,5 +143,5 @@ public class Kemeny {
 		{
 			results=CalcKemeny.CalculateKemeny(options, votes, permutations, winner);
 		}
-	}*/
+	}
 }

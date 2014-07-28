@@ -14,6 +14,17 @@
 				</t:loop>
 			</table>
 		</t:if>
+		<t:if test="showKemeny">
+			Nombre->${ballot.name}
+			IdData->${kemeny.id}
+			<table>
+				<t:loop t:source="kemeny.permutations" t:value="permutation">
+					<tr>
+						<td>${permutation}</td><td>${kemenyVote}</td>
+					</tr>
+				</t:loop>
+			</table>
+		</t:if>
 	
 	</t:border>
 </html>

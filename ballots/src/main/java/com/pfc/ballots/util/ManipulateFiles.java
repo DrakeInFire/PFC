@@ -57,26 +57,33 @@ public class ManipulateFiles {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) 
 				{	
 					Element eElement = (Element) nNode;
-					Integer xt=x+1;
+					Integer xt=x+1;//un id real sera introducido cuando se añada a la base de datos
 					temp.setId(xt.toString());
-					if(eElement.getElementsByTagName("email").getLength()!=0)
-						{temp.setEmail(eElement.getElementsByTagName("email").item(0).getTextContent());
-						 temp.setPassword(eElement.getElementsByTagName("email").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("firstName").getLength()!=0)
-						{temp.setFirstName(eElement.getElementsByTagName("firstName").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("lastName").getLength()!=0)
-						{temp.setLastName(eElement.getElementsByTagName("lastName").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("password").getLength()!=0)
-						{temp.setPassword(eElement.getElementsByTagName("password").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("university").getLength()!=0)
-						{temp.setUniversity(eElement.getElementsByTagName("university").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("city").getLength()!=0)
-						{temp.setCity(eElement.getElementsByTagName("city").item(0).getTextContent());}
-					if(eElement.getElementsByTagName("country").getLength()!=0)
-						{temp.setCountry(eElement.getElementsByTagName("country").item(0).getTextContent());}
-					
-					
-					list.add(temp);
+					if(eElement.getElementsByTagName("firstName").getLength()!=0 && eElement.getElementsByTagName("lastName").getLength()!=0)
+					{
+						temp.setFirstName(eElement.getElementsByTagName("firstName").item(0).getTextContent());
+						temp.setLastName(eElement.getElementsByTagName("lastName").item(0).getTextContent());
+						
+						if(eElement.getElementsByTagName("email").getLength()!=0)
+							{temp.setEmail(eElement.getElementsByTagName("email").item(0).getTextContent());
+							 temp.setPassword(eElement.getElementsByTagName("email").item(0).getTextContent());}
+						else 
+						{
+								temp.setEmail(eElement.getElementsByTagName("firstName").item(0).getTextContent()+"0@nomail.com");
+								temp.setPassword(eElement.getElementsByTagName("firstName").item(0).getTextContent()+"0@nomail.com");	
+						}
+						if(eElement.getElementsByTagName("password").getLength()!=0)
+							{temp.setPassword(eElement.getElementsByTagName("password").item(0).getTextContent());}
+						if(eElement.getElementsByTagName("university").getLength()!=0)
+							{temp.setUniversity(eElement.getElementsByTagName("university").item(0).getTextContent());}
+						if(eElement.getElementsByTagName("city").getLength()!=0)
+							{temp.setCity(eElement.getElementsByTagName("city").item(0).getTextContent());}
+						if(eElement.getElementsByTagName("country").getLength()!=0)
+							{temp.setCountry(eElement.getElementsByTagName("country").item(0).getTextContent());}
+						
+						
+						list.add(temp);
+					}
 				}
 			}
 		}

@@ -22,6 +22,7 @@ import com.pfc.ballots.dao.LogDao;
 import com.pfc.ballots.dao.UserDao;
 import com.pfc.ballots.dao.UserLogedDao;
 import com.pfc.ballots.data.DataSession;
+import com.pfc.ballots.pages.Contact;
 import com.pfc.ballots.pages.Index;
 import com.pfc.ballots.pages.MethodsInfo;
 import com.pfc.ballots.pages.Census.AdminCensus;
@@ -333,6 +334,8 @@ public class Border {
 				{page=Index.class;}
 			if(section.equals("new-user1"))
 				{page=CreateProfile.class;}
+			if(section.equals("contact"))
+				{page=Contact.class;}
 			if(section.equals("LogIn"))
 				{page=LogIn.class;}
 			if(section.equals("methods"))

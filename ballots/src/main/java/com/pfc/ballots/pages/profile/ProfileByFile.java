@@ -67,8 +67,33 @@ public class ProfileByFile {
 	
 	private List<Profile> added;
 	
-	@Property
+	
 	private Profile person;
+	public Profile getPerson()
+	{
+		userDao=DB4O.getUsuarioDao(access);
+		if(userDao.isNoMailRegistred(person.getEmail()))
+		{
+			boolean isOk=false;
+			int i=1;
+			while(isOk==false)
+			{
+				person.setEmail(person.getFirstName()+i+"@nomail.com");
+				person.setPassword(person.getFirstName()+i+"@nomail.com");
+
+				i++;
+				if(!userDao.isNoMailRegistred(person.getEmail()))
+				{
+					isOk=true;
+				}
+			}
+		}
+		return person;
+	}
+	public void setPerson (Profile person)
+	{
+		this.person=person;
+	}
 	
 	@Persist
 	@Property
@@ -164,7 +189,7 @@ public class ProfileByFile {
 	{
 		System.out.println("SUCCESSS");
 		String[] namef=file.getFileName().split("\\.");
-		finalpath=path+"user."+namef[namef.length-1];
+		finalpath=path+datasession.getEmail()+"."+namef[namef.length-1];
 		File copied= new File(finalpath);
 		fileupload=true;
 		fileLoaded=false;

@@ -1,7 +1,42 @@
-<html t:type="layout" title="Contact com.pfc"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
-      xmlns:p="tapestry:parameter">
+<html xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   
+	<t:border xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+	
+		<t:if test="showEmailProblem">
+			<h1>PROBLEMA CON EL EMAIL</h1>
+			En estos momentos no es posible que usted se ponga en contacto con nostros debido a un problema con nuestra cuenta de correo electronico<br/>
+			Por favor, intentelo mas tarde<br/>
+			Perdon por las molestias
+			
+			
+			<p:else>
+				<t:form t:id="contact">
+					<h1>Conctacta con nosotros</h1>
+					Nuestra direccion de contacto es ${emailAccount.email}<br/>
+					<table>
+						<tr>
+							<td><t:Label t:for="remitente"/></td>
+							<td><t:textfield t:id="remitente"/></td>
+						</tr>
+						
+						<tr>
+							<td><t:Label t:for="text"/></td>
+							<td><t:TextArea t:id="text"></t:TextArea></td>
+						</tr>
+						
+					
+						<tr>
+							<td><input t:type="submit" value="send"/></td>
+						</tr>
+					
+					</table>
+				</t:form>
+		
+			</p:else>
+		</t:if>
 
-    <p>Contact com.pfc ...</p>
+	
+	
 
+	</t:border>
 </html>

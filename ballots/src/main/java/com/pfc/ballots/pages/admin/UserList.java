@@ -24,11 +24,13 @@ import com.pfc.ballots.pages.UnauthorizedAttempt;
 
 public class UserList {
 
-
+	@InjectComponent
+	private Zone nomailgrid;
 	@InjectComponent
 	private Zone usergrid;
 	@InjectComponent
 	private Zone editZone;
+	
 	@InjectComponent
 	private Form editForm;
 	
@@ -42,13 +44,23 @@ public class UserList {
 	private List<Profile> users;
 	@Property
 	private Profile user;
+	@Property
+	@Persist
+	private List<Profile> nomails;
+	@Property
+	private Profile nomail;
+	@Property
+	@Persist
+	private boolean showNoMail;
+	
 	
 	@Persist
 	@Property
 	private boolean editing;
 	@Property
 	private boolean nonavalible;
-	
+	@Persist
+	private boolean normalEdit;
 	@Persist
 	@Property
 	private Profile editprof;
@@ -74,6 +86,11 @@ public class UserList {
 		editing=false;
 		userDao=DB4O.getUsuarioDao(datasession.getDBName());
 		users=userDao.RetrieveAllProfilesSortLastLog();
+		nomails=userDao.getNoMailProfiles();
+		if(nomails==null || nomails.size()==0)
+		{showNoMail=false;}
+		else
+		{showNoMail=true;}
 		userLogedDao=DB4O.getUserLogedDao(datasession.getDBName());
 		editprof=null;
 	}
@@ -85,6 +102,7 @@ public class UserList {
 		else
 			return false;
 	}
+
 	public void onSelectedFromSave()
 	{
 		action=Actions.SAVE;
@@ -102,30 +120,50 @@ public class UserList {
 			if(action==Actions.SAVE)
 			{	
 				user=lookforid(editprof.getId());
-				if(!editprof.equals(user))
-				{
-					if(!user.getEmail().equals(editprof.getEmail()))
+				nomail=lookforidnomail(editprof.getId());
+				
+				
+					if(!editprof.equals(user))
 					{
-						if(userDao.isProfileRegistred(editprof.getEmail()))
+						if(!user.getEmail().equals(editprof.getEmail()))
 						{
-							nonavalible=true;
-							success=false;
+							if(userDao.isProfileRegistred(editprof.getEmail()))
+							{
+								nonavalible=true;
+								success=false;
+							}
+						}
+						if(success)
+						{
+							userLogedDao.deleteByEmail(user.getEmail());
+							userDao.UpdateById(editprof);
+							user.copy(editprof);
+							if(nomail!=null)
+							{
+								if(!editprof.getEmail().contains("@nomail"))
+								{
+									nomails.remove(nomail);
+								}
+							}
+							else
+							{
+								if(editprof.getEmail().contains("@nomail"))
+								{
+									nomails.add(user);
+								}
+							}
+							
+							editing=false;
 						}
 						
 					}
-					if(success)
+					else
 					{
-						userLogedDao.deleteByEmail(user.getEmail());
-						userDao.UpdateById(editprof);
-						user.copy(editprof);
 						editing=false;
 					}
-					
-				}
-				else
-				{
-					editing=false;
-				}
+				
+				
+			
 			}
 			if(action==Actions.CANCEL)
 			{
@@ -133,7 +171,7 @@ public class UserList {
 			}
 			
 			
-			ajaxResponseRenderer.addRender(usergrid).addRender(editZone);
+			ajaxResponseRenderer.addRender("usergrid",usergrid).addRender("editZone",editZone).addRender("nomailgrid",nomailgrid);
 			System.out.println("SUCCESS");
 		}
 	}
@@ -146,7 +184,7 @@ public class UserList {
 			if(action==Actions.CANCEL)
 			{
 			editing=false;
-			ajaxResponseRenderer.addRender(usergrid).addRender(editZone);
+			ajaxResponseRenderer.addRender("usergrid",usergrid).addRender("editZone",editZone);
 			}
 			System.out.println("FAILURE");
 		}
@@ -159,10 +197,23 @@ public class UserList {
 		if(request.isXHR())
 		{
 			editing=true;
+			normalEdit=true;
 			nonavalible=false;
 			user=lookforid(id);
 			editprof=new Profile(user);
-			ajaxResponseRenderer.addRender(usergrid).addRender(editZone);
+			ajaxResponseRenderer.addRender("usergrid",usergrid).addRender("nomailgrid",nomailgrid).addRender("editZone",editZone);
+		}
+	}
+	public void onActionFromEditnomail(String id)
+	{
+		if(request.isXHR())
+		{
+			editing=true;
+			normalEdit=false;
+			nonavalible=false;
+			user=lookforid(id);
+			editprof=new Profile(user);
+			ajaxResponseRenderer.addRender("usergrid",usergrid).addRender("nomailgrid",nomailgrid).addRender("editZone",editZone);
 		}
 	}
 	
@@ -171,7 +222,7 @@ public class UserList {
 		if(request.isXHR())
 		{
 			editing=false;
-			ajaxResponseRenderer.addRender(usergrid).addRender(editZone);
+			ajaxResponseRenderer.addRender("usergrid",usergrid).addRender("editZone",editZone);
 		}
 	}
 	public void onActionFromDeleteuser(String email)
@@ -180,9 +231,27 @@ public class UserList {
 		{
 			userDao.deleteByEmail(email);
 			userLogedDao.deleteByEmail(email);
+			if(email.contains("@nomail"))
+			{
+			nomail=lookfornomail(email);
+			nomails.remove(nomail);
+			}
 			user=lookforemail(email);
 			users.remove(user);
-			ajaxResponseRenderer.addRender(usergrid);
+			ajaxResponseRenderer.addRender("nomailgrid",nomailgrid).addRender("usergrid",usergrid);
+		}
+	}
+	public void onActionFromDeletenomail(String email)
+	{
+		if(request.isXHR())
+		{
+			userDao.deleteByEmail(email);
+			userLogedDao.deleteByEmail(email);
+			nomail=lookfornomail(email);
+			nomails.remove(nomail);
+			user=lookforemail(email);
+			users.remove(user);
+			ajaxResponseRenderer.addRender("nomailgrid",nomailgrid).addRender("usergrid",usergrid);
 		}
 	}
 	private Profile lookforemail(String email)
@@ -196,6 +265,30 @@ public class UserList {
 		}
 		return null;
 		
+	}
+	private Profile lookfornomail(String email)
+	{
+		for(int i=0;i<nomails.size();i++)
+		{
+			if(nomails.get(i).getEmail().equals(email))
+			{
+				return nomails.get(i);
+			}
+		}
+		return null;
+		
+	}
+	private Profile lookforidnomail(String id)
+	{
+		for(int i=0;i<nomails.size();i++)
+		{
+			if(nomails.get(i).getId().equals(id))
+			{
+				return nomails.get(i);
+			}
+		}
+		
+		return null;
 	}
 	private Profile lookforid(String id)
 	{

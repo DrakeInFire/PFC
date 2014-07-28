@@ -1,6 +1,23 @@
 <html xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
    
 	<t:border xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+		<t:zone t:id="nomailgrid" id="nomailgrid">
+			<t:if test="showNoMail">
+				<t:grid source="nomails" reorder="email,admin,maker" row="nomail" add="id,Edit,Delete" exclude="password,owner">
+					<p:deletecell>
+						<t:if test="!editing">
+								<t:actionlink t:id="deletenomail" context="nomail.email" zone="^"><button>Delete</button></t:actionlink>
+						</t:if>
+					</p:deletecell>
+					<p:editcell>
+						<t:if test="!editing">
+							<t:actionlink t:id="editnomail" zone="^" context="nomail.id"><button>edit</button></t:actionlink>
+						</t:if>
+					</p:editcell>
+				</t:grid>					
+			</t:if>
+		</t:zone>
+		
 		<t:zone t:id="usergrid" id="usergrid">	
 			<t:grid source="users" reorder="email,admin,maker" row="user" add="id,Edit,Delete" exclude="password">
 				<p:editcell>

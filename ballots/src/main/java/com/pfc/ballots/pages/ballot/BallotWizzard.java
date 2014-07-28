@@ -751,7 +751,7 @@ public class BallotWizzard {
 			{
 				ballot.setIdCensus("none");
 				kemeny.setVotes(GenerateDocentVotes.generateKemeny(kemeny.getOptionPairs(), Integer.parseInt(census)));
-				//kemeny.calcularKemeny()
+				kemeny.calcularKemeny();
 				ballot.setEnded(true);
 				Vote vote=new Vote(ballot.getId(),datasession.getId(),true);//Almacena vote para docente(solo el creador)
 				ballot.setEnded(true);
