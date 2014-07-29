@@ -18,19 +18,21 @@ public class UserDaoDB4O implements UserDao{
 	String ruta=System.getProperty("user.home")+sep+"BallotsFiles"+sep;
 	EmbeddedConfiguration config = null;
 	ObjectContainer DB=null;
-	
-	
+	String DBName;
+	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
+
 	public UserDaoDB4O(String DBName)
 	{
 		if(DBName==null)
 		{
-			PATH=ruta+"DB4Obbdd.dat";
+			this.DBName="DB4Obbdd.dat";
+			PATH=ruta+this.DBName;
 		}
 		else
 		{
 			PATH=ruta+DBName;
+			this.DBName=DBName;
 		}
-		System.out.println(ruta);
 	}
 				   
 	
@@ -66,12 +68,15 @@ public class UserDaoDB4O implements UserDao{
 		open();
 		try
 		{
-			for(int i=0;i<profiles.size();i++)
+			if(profiles!=null)
 			{
-				if(!testEmail(profiles.get(i).getEmail()))
+				for(int i=0;i<profiles.size();i++)
 				{
-					DB.store(profiles.get(i));
-					System.out.println("[DB4O]Profile was stored");
+					if(!testEmail(profiles.get(i).getEmail()))
+					{
+						DB.store(profiles.get(i));
+						System.out.println("[DB4O]Profile was stored");
+					}
 				}
 			}
 		}
@@ -204,15 +209,18 @@ public class UserDaoDB4O implements UserDao{
 		}
 		return null;	
 	}
-	public List<Profile> getProfileById(List<String> id)
+	public List<Profile> getProfileById(List<String> ids)
 	{
 		open();
 		List<Profile> list=new LinkedList<Profile>();
 		try
 		{
-			for(String current:id)
+			if(ids!=null)
 			{
-				list.add(getById(current));
+				for(String current:ids)
+				{
+					list.add(getById(current));
+				}
 			}
 		}
 		catch(Exception e)
@@ -451,7 +459,32 @@ public class UserDaoDB4O implements UserDao{
 	}
 	
 	//***************************************************IsRegistred************************************************//
-	
+	public boolean isIdRegistred(String id)
+	{
+		open();
+		try
+		{
+			Profile temp=new Profile();
+			temp.setId(id);
+			ObjectSet result = DB.queryByExample(temp);
+			if(result.hasNext())
+			{
+				return true;
+			}
+			return false;
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+		
+		return true;
+	}
 	public boolean isProfileRegistred(String email)
 	{
 		boolean temp=true;
@@ -552,7 +585,7 @@ public class UserDaoDB4O implements UserDao{
 			temp=getById(updatedProfile.getId());
 			DB.delete(temp);
 			DB.store(updatedProfile);
-			
+			DB.commit();
 					
 		}catch(Exception e)
 		{
@@ -563,6 +596,29 @@ public class UserDaoDB4O implements UserDao{
 		}
 		
 	}
+	public void updateList(List<Profile> updated)
+	{
+		open();
+		try
+		{
+			if(updated!=null)
+			{
+				for(Profile current:updated)
+				{
+					Profile temp=getById(current.getId());
+					DB.delete(temp);
+					DB.store(current);
+				}
+			}
+					
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally{
+			close();
+		}
+	}
 	
 	//**********************************************   Delete    **************************************************//
 	public void deleteByEmail(String Email)
@@ -571,7 +627,9 @@ public class UserDaoDB4O implements UserDao{
 		open();
 		try
 		{
+			CensusDao censusDao=DB4O.getCensusDao(DBName);
 			temp=getByEmail(Email);
+			//censusDao.deleteProfileOfCensus(temp.getInCensus(), temp.getId());
 			DB.delete(temp);
 			System.out.println("[DB4O]Profile was erased");
 		}
@@ -592,7 +650,10 @@ public class UserDaoDB4O implements UserDao{
 		open();
 		try
 		{
+			CensusDao censusDao=DB4O.getCensusDao(DBName);
+
 			temp=getById(id);
+			//censusDao.deleteProfileOfCensus(temp.getInCensus(), temp.getId());
 			DB.delete(temp);	
 					
 		}catch(Exception e)
@@ -644,6 +705,59 @@ public class UserDaoDB4O implements UserDao{
 		return null;
 	}
 	
+	////////////////////////////////////////// CENSUS TOOLS //////////////////////////////////////////////
+	
+	public void addCensusToProfiles(List<String> idProfiles,String idCensus)
+	{
+		open();
+		try
+		{
+			if(idProfiles!=null)
+			{
+				for(String current:idProfiles)
+				{
+					Profile temp=getById(current);
+					DB.delete(temp);
+					temp.addCensusId(idCensus);
+					DB.store(temp);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+	}
+	public void removeCensusToProfiles(List<String> idProfiles,String idCensus)
+	{
+		open();
+		try
+		{
+			if(idProfiles!=null)
+			{
+				for(String current:idProfiles)
+				{
+					Profile temp=getById(current);
+					DB.delete(temp);
+					temp.removeCensusId(idCensus);
+					DB.store(temp);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+	}
+	
 
 	//********************************************Open and Close DB************************************//
 	
@@ -651,6 +765,7 @@ public class UserDaoDB4O implements UserDao{
 	{
 		config=Db4oEmbedded.newConfiguration();
 		config.common().objectClass(Profile.class).cascadeOnUpdate(true);
+
 		try
 		{
 			

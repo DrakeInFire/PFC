@@ -4,6 +4,8 @@ package com.pfc.ballots.entities;
 
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.tapestry5.beaneditor.NonVisual;
 import org.apache.tapestry5.beaneditor.Validate;
@@ -86,6 +88,8 @@ public class Profile {
 	private Date regDate;
 	
 	private Date lastLog;
+	
+	private List<String> inCensus;
 	
 	public String getId()
 	{
@@ -205,6 +209,14 @@ public class Profile {
 	public void setLogtoactual() {
 		lastLog =new Date();
 	}
+	
+	public List<String> getInCensus() {
+		return inCensus;
+	}
+	public void setInCensus(List<String> inCensus) {
+		this.inCensus = inCensus;
+	}
+	
 	public String getPlainPass() {
 		return plainPass;
 	}
@@ -232,6 +244,55 @@ public class Profile {
 	public void setOwner(boolean owner) {
 		this.owner = owner;
 	}
+	
+	public void addCensusId(String idCensus)
+	{
+		if(inCensus==null)
+		{
+			inCensus=new LinkedList<String>();
+		}
+		inCensus.add(idCensus);
+	}
+	public void clearCensusId()
+	{
+		if(inCensus!=null)
+		{
+			inCensus.clear();
+		}
+	}
+	public boolean isCensedIn(String idCensus)
+	{
+		if(inCensus==null)
+		{
+			return false;
+		}
+		for(String temp:inCensus)
+		{
+			if(temp.equals(idCensus))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean removeCensusId(String idCensus)
+	{
+		if(inCensus==null)
+		{
+			return false;
+		}
+		for(String temp:inCensus)
+		{
+			if(temp.equals(idCensus))
+			{
+				inCensus.remove(temp);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * Requiered fields must be filled(no compare password) 
 	 */

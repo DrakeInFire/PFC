@@ -20,11 +20,20 @@ public interface UserDao {
 	public void setOwner(String idNewOwner);
 	public Profile getOwner();
 	
+	
 	public void UpdateByEmail(String Email,Profile updatedProfile);
 	public void UpdateByEmail(Profile updatedProfile);
 	public void UpdateById(Profile updatedProfile);
+	public void updateList(List<Profile> updated);
 	public void deleteByEmail(String Email);
 	public void deleteById(String id);
 	public boolean isNoMailRegistred(String Email);
 	public boolean isProfileRegistred(String Email);
+	public boolean isIdRegistred(String id);
+
+	
+	
+	public void addCensusToProfiles(List<String> idProfiles,String idCensus);
+	public void removeCensusToProfiles(List<String>idProfiles,String idCensus);
+	
 }

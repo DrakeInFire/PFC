@@ -333,6 +333,8 @@ public class Border {
 				{page=Index.class;}
 			if(section.equals("new-user1"))
 				{page=CreateProfile.class;}
+			if(section.equals("new-ballot"))
+				{page=BallotWizzard.class;}
 			if(section.equals("contact"))
 				{page=Contact.class;}
 			if(section.equals("LogIn"))

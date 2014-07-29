@@ -19,7 +19,7 @@
 				<li><t:eventlink t:event="menu" t:zone="userZone" t:context="literal:new-user1" ><plain>${message:new-user}</plain></t:eventlink></li>
 			</t:if>
 			<t:if test="maker">
-				<li><plain>${message:new-ballot}</plain></li>
+				<li><t:eventlink t:event="menu" t:zone="userZone" t:context="literal:new-ballot" ><plain>${message:new-ballot}</plain></t:eventlink></li>	
 			</t:if>
 			<li><t:eventlink t:event="menu" t:zone="userZone" t:context="literal:contact" ><plain>${message:contact}</plain></t:eventlink></li>	
 			<li><plain>${message:about}</plain></li>

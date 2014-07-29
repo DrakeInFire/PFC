@@ -130,10 +130,10 @@
 					</tr>
 					<tr>
 						<td>
-							<label><input t:type="submit" t:id="saveMayRel" value="Save"/></label>
+							<label><input t:type="submit" t:id="save" value="Save"/></label>
 						</td>
 						<td>
-							<input t:type="submit" t:id="cancelMayRel" value="Cancel" t:mode="cancel"/>
+							<input t:type="submit" t:id="cancel" value="Cancel" t:mode="cancel"/>
 						</td>
 					</tr>
 					</table>

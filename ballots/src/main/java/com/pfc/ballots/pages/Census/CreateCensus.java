@@ -35,8 +35,10 @@ public class CreateCensus {
 	
 	//DAO
 	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
-	UserDao userDao=null;
-	CensusDao censusDao=null;
+	@Persist
+	UserDao userDao;
+	@Persist
+	CensusDao censusDao;
 	
 	//Variables
 	@Inject
@@ -51,19 +53,18 @@ public class CreateCensus {
 	
 	
 	//Methods
-	public CreateCensus()
-	{
-		userDao=DB4O.getUsuarioDao(datasession.getDBName());
-		censusDao=DB4O.getCensusDao(datasession.getDBName());
-	}
+
 	public void setupRender()
 	{
 		componentResources.discardPersistentFieldChanges();
+		userDao=DB4O.getUsuarioDao(datasession.getDBName());
+		censusDao=DB4O.getCensusDao(datasession.getDBName());
 		
 	}
+	
 	public void cleanupRender()
 	{
-		componentResources.discardPersistentFieldChanges();
+//		componentResources.discardPersistentFieldChanges();
 		
 	}
 	
@@ -475,6 +476,8 @@ public class CreateCensus {
 				.addRender("buttonsZone",buttonsZone);
 		}
 	}
+	
+	
 	public Object onActionFromEndbut()
 	{
 		Census census=new Census();
@@ -483,10 +486,16 @@ public class CreateCensus {
 		census.setId(UUID.generate());
 		census.setIdOwner(datasession.getId());
 		census.setEmail(datasession.getEmail());
+		
 		for(Profile temp:censusList)
 		{
+			temp.addCensusId(census.getId());
+			userDao.UpdateById(temp);
 			census.addIdToUsersCounted(temp.getId());
 		}
+		
+		//userDao.updateList(censusList);
+		
 		censusDao.store(census);
 		
 		return CensusList.class;

@@ -48,22 +48,20 @@ public class UsersCounted {
 	
 	
 	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
-	CensusDao censusDao=null;
-	UserDao userDao=null;
+	@Persist
+	CensusDao censusDao;
+	@Persist
+	UserDao userDao;
 	
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 /////////////////////////////////////////////// BUILDER AND SETUP ///////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public UsersCounted()
-	{
-		
-		censusDao=DB4O.getCensusDao(datasession.getDBName());
-		userDao=DB4O.getUsuarioDao(datasession.getDBName());
-	
-	}
+
 	
 	public void setupRender()
 	{
+		censusDao=DB4O.getCensusDao(datasession.getDBName());
+		userDao=DB4O.getUsuarioDao(datasession.getDBName());
 		showUsersCountedZone=false;
 		showNameZone=false;
 		nameNotAvalible=false;
@@ -542,6 +540,7 @@ public class UsersCounted {
 	}
 	public void onActionFromSavebut()
 	{
+		Census old=new Census(census);
 		census.emptyUsersCounted();
 		users=editUsers;
 		for(Profile temp:editUsers)
@@ -549,6 +548,14 @@ public class UsersCounted {
 			census.addIdToUsersCounted(temp.getId());
 		}
 		censusDao.update(census);
+		
+		List<String> added=new LinkedList<String>();
+		List<String> removed=new LinkedList<String>();
+		old.calcDifference(census, added, removed);
+		userDao.addCensusToProfiles(added, old.getId());
+		userDao.removeCensusToProfiles(removed, old.getId());
+		
+		
 	}
 	
 	

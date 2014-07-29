@@ -13,6 +13,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.pfc.ballots.dao.CensusDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.UserDao;
 import com.pfc.ballots.dao.UserLogedDao;
@@ -80,18 +81,22 @@ public class UserList {
 	UserDao userDao;
 	@Persist
 	UserLogedDao userLogedDao;
+	@Persist
+	CensusDao censusDao;
 	
 	public void setupRender()
 	{
-		editing=false;
 		userDao=DB4O.getUsuarioDao(datasession.getDBName());
+		userLogedDao=DB4O.getUserLogedDao(datasession.getDBName());
+		censusDao=DB4O.getCensusDao(datasession.getDBName());
+		
+		editing=false;
 		users=userDao.RetrieveAllProfilesSortLastLog();
 		nomails=userDao.getNoMailProfiles();
 		if(nomails==null || nomails.size()==0)
 		{showNoMail=false;}
 		else
 		{showNoMail=true;}
-		userLogedDao=DB4O.getUserLogedDao(datasession.getDBName());
 		editprof=null;
 	}
 	
@@ -227,10 +232,18 @@ public class UserList {
 	}
 	public void onActionFromDeleteuser(String email)
 	{
+		System.out.println("EMAIL->"+email);
 		if(request.isXHR())
 		{
+			Profile temp=userDao.getProfileByEmail(email);
+			
+			
+			//censusDao.deleteAllCensusOfOwner(temp.getId());
+			censusDao.deleteProfileOfCensus(temp.getInCensus(), temp.getId());
+			
 			userDao.deleteByEmail(email);
 			userLogedDao.deleteByEmail(email);
+			
 			if(email.contains("@nomail"))
 			{
 			nomail=lookfornomail(email);
@@ -245,6 +258,11 @@ public class UserList {
 	{
 		if(request.isXHR())
 		{
+			Profile temp=userDao.getProfileByEmail(email);
+			censusDao.deleteAllCensusOfOwner(temp.getId());
+			censusDao.deleteProfileOfCensus(temp.getInCensus(), temp.getId());
+			
+			
 			userDao.deleteByEmail(email);
 			userLogedDao.deleteByEmail(email);
 			nomail=lookfornomail(email);

@@ -28,8 +28,10 @@ public class AdminCensus {
 
 	
 	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
-	UserDao userDao=null;
-	CensusDao censusDao=null;
+	@Persist
+	UserDao userDao;
+	@Persist
+	CensusDao censusDao;
 	
 	@SessionState
 	private DataSession datasession;
@@ -55,16 +57,12 @@ public class AdminCensus {
 	@Persist
 	private List<Census> censuses;
 	
-	public AdminCensus()
-	{
-		userDao=DB4O.getUsuarioDao(datasession.getDBName());
-		censusDao= DB4O.getCensusDao(datasession.getDBName());
-		System.out.println("create");
-	}
 	
 	public void setupRender()
 	{
 		componentResources.discardPersistentFieldChanges();
+		userDao=DB4O.getUsuarioDao(datasession.getDBName());
+		censusDao= DB4O.getCensusDao(datasession.getDBName());
 		searched=false;
 	}
 	
@@ -101,6 +99,7 @@ public class AdminCensus {
 			{
 				if(temp.getId().equals(idCensus))
 				{
+					userDao.removeCensusToProfiles(temp.getUsersCounted(), idCensus);
 					censuses.remove(temp);
 				}
 			}

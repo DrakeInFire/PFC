@@ -67,6 +67,7 @@ public class CreateProfile {
 	
 	void setupRender() 
 	{
+		componentResources.discardPersistentFieldChanges();
 		dao=DB4O.getUsuarioDao(datasession.getDBName());
 		if(!isnotFirstTime)
 		{

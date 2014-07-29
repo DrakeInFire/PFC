@@ -9,6 +9,7 @@ import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.query.Query;
 import com.pfc.ballots.entities.Census;
+import com.pfc.ballots.entities.Profile;
 
 public class CensusDaoDB4O implements CensusDao{
 
@@ -17,18 +18,23 @@ public class CensusDaoDB4O implements CensusDao{
 	String ruta=System.getProperty("user.home")+sep+"BallotsFiles"+sep;
 	EmbeddedConfiguration config = null;
 	ObjectContainer DB=null;
-	
+	String DBName;
+	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
+	//UserDaoDB4O userDao;
 	public CensusDaoDB4O(String DBName)
 	{
 		if(DBName==null)
 		{
-			PATH=ruta+"DB4Obbdd.dat";
+			this.DBName="DB4Obbdd.dat";
+			PATH=ruta+this.DBName;
 		}
 		else
 		{
 			PATH=ruta+DBName;
+			this.DBName=DBName;
 		}
-		System.out.println(ruta);
+		
+		//userDao=new UserDaoDB4O(DBName);
 	}
 	//************************************** Store ****************************************************//
 	
@@ -38,6 +44,8 @@ public class CensusDaoDB4O implements CensusDao{
 		try
 		{
 			DB.store(census);
+			UserDao userDao=DB4O.getUsuarioDao(DBName);
+			//userDao.addCensusToProfiles(census.getUsersCounted(), census.getId());
 			System.out.println("[DB4O]Census was stored");
 		}
 		catch(Exception e)
@@ -67,7 +75,8 @@ public class CensusDaoDB4O implements CensusDao{
 			
 			while(result.hasNext())
 			{
-				list.add((Census)result.next());
+				Census temp=(Census)result.next();
+				list.add(temp);
 			}
 		}
 		catch(Exception e)
@@ -82,7 +91,18 @@ public class CensusDaoDB4O implements CensusDao{
 		
 		return list;
 	}
-	
+	public List<Census> getCensusById(List<String> ids)
+	{
+		List<Census> list=new LinkedList<Census>();
+		if(ids!=null)
+		{
+			for(String current:ids)
+			{
+				list.add(getById(current));
+			}
+		}
+		return list;
+	}
 	
 	@SuppressWarnings("rawtypes")
 	public Census getById(String id) {
@@ -159,11 +179,13 @@ public class CensusDaoDB4O implements CensusDao{
 		{
 			Census census= new Census();
 			census.setId(id);
+			
 			ObjectSet result=DB.queryByExample(census);
 			
 			if(result.hasNext())
 			{
-				DB.delete((Census)result.next());
+				Census temp=(Census)result.next();
+				DB.delete(temp);
 			}
 			else
 			{
@@ -192,12 +214,13 @@ public class CensusDaoDB4O implements CensusDao{
 			
 			while(result.hasNext())
 			{
-				DB.delete((Census)result.next());
+				Census temp=(Census)result.next();
+				DB.delete(temp);
 			}
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -207,19 +230,28 @@ public class CensusDaoDB4O implements CensusDao{
 	//************************************************ UPDATE *****************************************//
 	
 	@SuppressWarnings("rawtypes")
-	public void update(Census census)
+	public void update(Census updated)
 	{
 		open();
 		try
 		{
 			Census temp=new Census();
-			temp.setId(census.getId());
+			temp.setId(updated.getId());
 			ObjectSet result=DB.queryByExample(temp);
+			List<String> added=new LinkedList<String>();
+			List<String> removed=new LinkedList<String>();
+			UserDao userDao=DB4O.getUsuarioDao(DBName);
 			
 			if(result.hasNext())
 			{
-				DB.delete((Census)result.next());
-				DB.store(census);
+				Census old=(Census)result.next();
+				//old.getDifference(updated, added, removed);
+				//userDao.addCensusToProfiles(added, updated.getId());
+				//userDao.removeCensusToProfiles(removed, updated.getId());
+				
+				
+				DB.delete(old);
+				DB.store(updated);
 				System.out.println("[DB4O] Census was updated");
 			}
 			
@@ -227,7 +259,7 @@ public class CensusDaoDB4O implements CensusDao{
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			System.out.println("[DB4]ERROR:Census could not be updated");
+			System.out.println("[DB4O]ERROR:Census could not be updated");
 		}
 		finally
 		{
@@ -275,13 +307,57 @@ public class CensusDaoDB4O implements CensusDao{
 		
 	}
 	
+	/////////////////////////////////////////////// USERS TOOLS /////////////////////////////////////////
 	
+	public boolean deleteProfileOfCensus(List<String>idCensus,String idProfile)
+	{
+		open();
+		try
+		{
+			if(idCensus!=null)
+			{
+				for(String current:idCensus)
+				{
+					Census temp=getCensusById(current);
+					DB.delete(temp);
+					temp.removeIdOfUsersCounted(idProfile);
+					DB.store(temp);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+		return false;
+		
+	}
+	
+	
+	
+	
+	private  Census getCensusById(String id)
+	{
+		Census temp=new Census();
+		temp.setId(id);
+		ObjectSet result = DB.queryByExample(temp);
+		if(result.hasNext())
+		{
+			return (Census)result.next();
+		}
+		
+		return null;
+	}
 	//********************************************Open and Close DB************************************//
 	
 		private void open()
 		{
 			config=Db4oEmbedded.newConfiguration();
-			config.common().objectClass(Census.class).cascadeOnUpdate(true);
+			//config.common().objectClass(Census.class).cascadeOnUpdate(true);
 			try
 			{
 				

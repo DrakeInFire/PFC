@@ -47,7 +47,9 @@ public class CensusList {
 	}
 	public void onActionFromRemoveBut(String idCensus)
 	{
-		censusDao.deleteById(idCensus);
+		Census tempCensus=censusDao.getById(idCensus);
+		userDao.removeCensusToProfiles(tempCensus.getUsersCounted(), idCensus);
+		censusDao.deleteById(idCensus);		
 	}
 	
 	public Object onActionFromDetailsBut(String idCensus)
