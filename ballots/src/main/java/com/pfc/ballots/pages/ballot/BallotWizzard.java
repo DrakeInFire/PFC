@@ -37,6 +37,7 @@ import com.pfc.ballots.encoder.CensusEncoder;
 import com.pfc.ballots.entities.Ballot;
 import com.pfc.ballots.entities.Census;
 import com.pfc.ballots.entities.EmailAccount;
+import com.pfc.ballots.entities.Profile;
 import com.pfc.ballots.entities.Vote;
 import com.pfc.ballots.entities.ballotdata.Kemeny;
 import com.pfc.ballots.entities.ballotdata.RelativeMajority;
@@ -618,6 +619,7 @@ public class BallotWizzard {
 					 //HACER RECUENTO VOTOS AQUI PARA DOCENTES
 					 relativeMajority.calcularMayoriaRelativa();
 					 Vote vote=new Vote(ballot.getId(),datasession.getId(),true);//Almacena vote para docente(solo el creador)
+					 this.sendMail(datasession.getId(), ballot);
 					 ballot.setEnded(true);
 					 ballot.setCounted(true);
 					 voteDao.store(vote);
@@ -625,6 +627,7 @@ public class BallotWizzard {
 				 else//Votacion Normal
 				 {
 					 boolean creatorInCensus=false;
+					 this.sendMail(censusNormal,ballot);
 					 for(String idUser:censusNormal.getUsersCounted())
 					 {
 						 	if(idUser.equals(datasession.getId())){creatorInCensus=true;}
@@ -634,6 +637,7 @@ public class BallotWizzard {
 					 if(!creatorInCensus)
 					 {
 						 voteDao.store(new Vote(ballot.getId(),datasession.getId()));
+						 this.sendMail(datasession.getId(), ballot);
 					 }
 					 
 				 }
@@ -760,6 +764,7 @@ public class BallotWizzard {
 				kemeny.calcularKemeny();
 				ballot.setEnded(true);
 				Vote vote=new Vote(ballot.getId(),datasession.getId(),true);//Almacena vote para docente(solo el creador)
+				this.sendMail(datasession.getId(),ballot);
 				ballot.setEnded(true);
 				ballot.setCounted(true);
 				voteDao.store(vote);
@@ -768,6 +773,7 @@ public class BallotWizzard {
 			else//Votacion Normal
 			{
 				 boolean creatorInCensus=false;
+				 this.sendMail(censusNormal, ballot);
 				 for(String idUser:censusNormal.getUsersCounted())
 				 {
 					 	if(idUser.equals(datasession.getId())){creatorInCensus=true;}
@@ -777,6 +783,7 @@ public class BallotWizzard {
 				 if(!creatorInCensus)
 				 {
 					 voteDao.store(new Vote(ballot.getId(),datasession.getId()));
+					 this.sendMail(datasession.getId(),ballot);
 				 }
 				 
 			 }
@@ -845,7 +852,44 @@ public class BallotWizzard {
 	}
 	
 	
-	
+	private void sendMail(Census censo,Ballot ballotMail)
+	{
+		userDao=DB4O.getUsuarioDao(datasession.getDBName());
+		emailAccountDao=DB4O.getEmailAccountDao();
+		List<Profile> usersToMail=userDao.getProfileById(censo.getUsersCounted());
+		EmailAccount account=emailAccountDao.getAccount();
+		
+		String metodo=null;
+		String subject;
+		String txt;
+		
+		
+		if(ballot.getMethod()==Method.MAYORIA_RELATIVA)
+		{
+			metodo="Mayoria Relativa";
+		}
+		else if(ballot.getMethod()==Method.KEMENY)
+		{
+			metodo="Kemeny";
+		}
+		
+		
+		if(ballotMail.isTeaching())
+		{
+			subject="Votacion docente "+metodo+": "+ballotMail.getName();
+			txt="La votacion docente "+ballotMail.getName()+" ha sido realizada con el metodo "+metodo+"<br/><br/>Su descripcion es:<br/>"+ballotMail.getDescription();
+		}
+		else
+		{
+			subject="Ya puedes Votar en: "+ballotMail.getName();
+			txt="Ya tiene acceso a la votacion ("+metodo+"): "+ballotMail.getName()+"<br/><br/>La descripcion de la votacion es:<br/>"+ballotMail.getDescription();
+		}
+		
+		for(Profile emailDestino:usersToMail)
+		{
+			Mail.sendMail(account.getEmail(), account.getPassword(), emailDestino.getEmail(), subject, txt);
+		}
+	}
 	private void sendMail (String idUser,Ballot ballotMail)
 	{
 		userDao=DB4O.getUsuarioDao(datasession.getDBName());
