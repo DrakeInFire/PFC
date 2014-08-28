@@ -34,6 +34,7 @@ import com.pfc.ballots.pages.Company.ListCompany;
 import com.pfc.ballots.pages.admin.AdminMail;
 import com.pfc.ballots.pages.admin.LogList;
 import com.pfc.ballots.pages.admin.UserList;
+import com.pfc.ballots.pages.ballot.BallotList;
 import com.pfc.ballots.pages.ballot.BallotWizzard;
 import com.pfc.ballots.pages.ballot.ShowBallotAdmin;
 import com.pfc.ballots.pages.profile.CreateProfile;
@@ -254,7 +255,14 @@ public class Border {
 			visibilityCensus=false;
 			page=ShowProfile.class;
 		}
-		
+		if(section.equals("my-ballots"))
+		{
+			visibilityUser=false;
+			visibilityBallot=false;
+			visibilityCompany=false;
+			visibilityCensus=false;
+			page=BallotList.class;
+		}
 		else if(section.equals("admin-mail"))
 		{
 			visibilityUser=false;

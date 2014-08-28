@@ -1,0 +1,44 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	  <head><title>${message:page-title}</title></head>
+	
+	<t:border>
+		
+		<t:zone t:id="gridZone" id="gridZone">
+			<t:if test="showGrid">
+				<t:grid t:id="ballotsGrid" source="ballots" row="ballot" add="finish,delete,maker,census" reorder="id,maker,name,method,census" exclude="idOwner,idballotdata,idCensus">
+					<p:makerCell>
+						${username}
+					</p:makerCell>
+					<p:censusCell>
+						${censusName}
+					</p:censusCell>
+					<p:deleteCell>
+						<t:actionLink t:id="deleteBallot" t:context="ballot.id" t:zone="^"><button>${message:delete-but}</button></t:actionLink>
+					</p:deleteCell>
+					<p:finishCell>
+						<t:if test="!ballot.ended">
+							<t:actionLink t:id="finishBallot" t:context="ballot.id" t:zone="^"><button>${message:finish-but}</button></t:actionLink>
+						</t:if>
+					</p:finishCell>
+				</t:grid>
+				
+			</t:if>
+		</t:zone>
+		
+		
+		<t:zone t:id="areuSureZone" id="areuSureZone">
+			<t:if test="showAreuSure">
+				<t:if test="optionDelete">
+					Esta usted seguro de que quiere <strong>eliminar</strong> la botacion <strong>${ballotSure.name}</strong> del usuario <strong>${userSure}</strong>
+					<p:else>
+						Esta usted seguro de que quiere <strong>finalizar</strong> la votacion <strong>${ballotSure.name}</strong> del usuario <strong>${userSure}</strong>
+					</p:else>
+				</t:if>
+				<br/>
+				<t:actionLink t:id="isSure" t:zone="^"><button>YES</button></t:actionLink>
+				<t:actionLink t:id="notSure" t:zone="^"><button>NO</button></t:actionLink>
+			</t:if>
+		</t:zone>
+		
+	</t:border>
+</html>

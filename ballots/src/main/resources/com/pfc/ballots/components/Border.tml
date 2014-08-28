@@ -41,7 +41,7 @@
 		<li><t:eventlink t:event="menu" t:context="literal:my-profile"><plain>${message:my-profile}</plain></t:eventlink></li>
 		
 		<t:if test="maker">
-			<li><plain>${message:ballots-by-me}</plain></li>
+			<li><t:eventlink t:event="menu" t:context="literal:my-ballots"><plain>${message:ballots-by-me}</plain></t:eventlink></li>
 			<li><t:eventlink t:event="menu" t:zone="censusZone" t:context="literal:censusz"><plain>${message:census}</plain></t:eventlink></li>
 		</t:if>
 		

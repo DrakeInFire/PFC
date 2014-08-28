@@ -174,7 +174,7 @@ public class Index
 				return false;
 			return true;
 		}
-		/*
+		
 	    @SessionAttribute
 		private String contextBallotId;
 		public Object onActionFromVoteBallot(String id)
@@ -189,7 +189,7 @@ public class Index
 		{
 			contextResultBallotId=id;
 			return ResultBallot.class;
-		}*/
+		}
 		
 		
 		

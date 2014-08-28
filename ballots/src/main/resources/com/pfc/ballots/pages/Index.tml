@@ -34,7 +34,7 @@
 						<table>
 							 <tr><th>Activas</th></tr>
 							 <t:loop t:source="activeBallots" t:value="ballot">
-									<tr><td>Nombre->${ballot.name}</td></tr>
+									<tr><td><t:actionlink t:id="voteBallot" t:context="ballot.id"> Nombre->${ballot.name}</t:actionlink></td></tr>
 							</t:loop>
 						</table>
 					</t:if>
@@ -42,7 +42,7 @@
 						<table>
 							 <tr><th>Terminadas</th></tr>
 							 <t:loop t:source="endedBallots" t:value="ballot">
-									<tr><td>Nombre->${ballot.name}</td></tr>
+									<tr><td><t:actionlink t:id="resultBallot" context="ballot.id">Nombre->${ballot.name}</t:actionlink></td></tr>
 							</t:loop>
 						</table>
 					</t:if>

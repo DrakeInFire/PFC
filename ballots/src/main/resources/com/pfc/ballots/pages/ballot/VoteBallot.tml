@@ -22,8 +22,11 @@
 					 	</t:radiogroup>
 					 	<input t:type="submit" value="${message:vote-but}"/>
 					 </t:form>
-					 
 				 </table>
+				 
+				 
+				 
+				 
 			</t:if>
 			<t:if test="showKemeny">
 				<t:zone t:id="kemenyZone">
