@@ -1,6 +1,9 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <head><title>${message:page-title}</title></head>   
-	<t:border>
+	<t:border><div id="contactDiv">
+	
+	
+	<h1>${message:contact-with-us}</h1><hr/>
 	
 		<t:if test="showEmailProblem">
 			<h1>${message:mail-problem}</h1>
@@ -12,7 +15,6 @@
 			
 			<p:else>
 				<t:form t:id="contact">
-					<h1>${message:contact-with-us}</h1>
 					${message:our-email} ${emailAccount.email}<br/><br/>
 					<table>
 						<tr>
@@ -39,5 +41,5 @@
 	
 	
 
-	</t:border>
+	</div></t:border>
 </html>

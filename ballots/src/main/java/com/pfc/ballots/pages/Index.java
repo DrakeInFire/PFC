@@ -150,6 +150,18 @@ public class Index
 			return false;
 		}
 		
+		public String getMetodo()
+		{
+			if(ballot.getMethod()==Method.MAYORIA_RELATIVA)
+			{
+				return "MAYORIA RELATIVA";
+			}
+			else
+			{
+				return "KEMENY";
+			}
+		}
+		
 		public boolean isShowNotStarted()
 		{
 			if(nonActiveBallots.size()==0)

@@ -1,7 +1,10 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="companydiv">
+		
+		<h1>${message:company-list}</h1><hr/>
+		
 		
 		<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//////////////////////////////////////////////// COMPANY GRID ZONE /////////////////////////////////////////////////////////////////
@@ -49,7 +52,7 @@
 			</t:if>
 		</t:zone>
 	
-	</t:border>
+	</div></t:border>
 	
 		
 			

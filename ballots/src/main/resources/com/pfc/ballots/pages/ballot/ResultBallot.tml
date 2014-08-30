@@ -16,16 +16,19 @@
       
  </head>
  
-	<t:border>
+	<t:border><div id="resultBallotDiv">
 		
-		<h1>${ballot.name}</h1>
-		<h3>${ballot.description}</h3>
+		<h1>${message:ballot-result}</h1><hr/>
+		
+		
+		<h2>${ballot.name}</h2>
+		<h2><small>${ballot.description}</small></h2>
 		
 		<div id="chart_div"></div>
 		
 		
 		<t:if test="showRelMay">
-			<table>
+			<table border="1px">
 				<tr><th>${message:option}</th><th>${message:votes}</th></tr>
 				<t:loop t:source="relMay.options" t:value="option">
 					<tr>
@@ -36,7 +39,7 @@
 		</t:if>
 		<t:if test="showKemeny">
 
-			<table>
+			<table border="1px">
 				<tr><th>${message:permutation}</th><th>${message:votes}</th></tr>
 				<t:loop t:source="kemeny.permutations" t:value="permutation">
 					<tr>
@@ -46,5 +49,5 @@
 			</table>
 		</t:if>
 	
-	</t:border>
+	</div></t:border>
 </html>

@@ -2,8 +2,8 @@
   <head><title>${message:page-title}</title></head>
 
 
-	<t:border>
-					<h1>${message:create-census}</h1>
+	<t:border><div id="CreateCensusDiv">
+					<h1>${message:create-census}</h1><hr/>
 	
 		<!--//////////////////////////////////////////////////////////////////////////////////////////
 		   ///////////////////////////////// NAME CENSUS ZONE /////////////////////////////////////// 
@@ -179,7 +179,7 @@
 						</t:if>
 			</t:zone>
 
-	</t:border>
+	</div></t:border>
 
 
 </html>

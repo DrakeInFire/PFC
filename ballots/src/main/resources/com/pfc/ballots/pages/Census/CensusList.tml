@@ -1,7 +1,9 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <head><title>${message:page-title}</title></head>
 
-	<t:border>
+	<t:border><div id="censuslistDiv">
+	
+		<h1>${message:my-census}</h1><hr/>
 		<t:grid source="censuses" row="census" add="remove,details" exclude="id,idowner" reorder="email">
 			<p:removecell>
 				<t:actionlink t:id="removebut" context="census.id"><button>${message:remove-but}</button></t:actionlink>
@@ -11,5 +13,6 @@
 				<t:actionlink t:id="detailsbut" context="census.id"><button>${message:details-but}</button></t:actionlink>
 			</p:detailscell>
 		</t:grid>
-	</t:border>
+		
+	</div></t:border>
 </html>

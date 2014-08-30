@@ -1,11 +1,12 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
 	  <head><title>${message:page-title}</title></head>
 	
-	<t:border>
+	<t:border><div id="ballotlistDiv">
 		
+		<h1>${message:my-ballots}</h1><hr/>
 		<t:zone t:id="gridZone" id="gridZone">
 			<t:if test="showGrid">
-				<t:grid t:id="ballotsGrid" source="ballots" row="ballot" add="finish,delete,maker,census" reorder="id,maker,name,method,census" exclude="idOwner,idballotdata,idCensus">
+				<t:grid t:id="ballotsGrid" source="ballots" row="ballot" add="finish,delete,maker,census" reorder="maker,name,method,census" exclude="id,notstarted,active,counted,description,idOwner,idballotdata,idCensus">
 					<p:makerCell>
 						${username}
 					</p:makerCell>
@@ -40,5 +41,6 @@
 			</t:if>
 		</t:zone>
 		
+	</div>
 	</t:border>
 </html>

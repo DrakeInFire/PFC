@@ -92,7 +92,7 @@ public class CreateCompany {
 	/**
 	 * Stores the company
 	 */
-	void onSuccess()
+	Object onSuccess()
 	{
 		company.setCompanyName(company.getCompanyName().toLowerCase());
 		if(companyDao.isCompanyRegistred(company.getCompanyName()))
@@ -127,8 +127,10 @@ public class CreateCompany {
 			userDao.store(profile);
 			companyDao.store(company);
 			componentResources.discardPersistentFieldChanges();
+			return ListCompany.class;
 			
 		}
+		return null;
 	}
 	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 /////////////////////////////////////////////////////// ON ACTIVATE //////////////////////////////////////////////////////// 

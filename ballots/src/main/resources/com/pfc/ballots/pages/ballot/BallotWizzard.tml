@@ -1,7 +1,10 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <meta http-equiv="Cache-control" content="no-cache"/> <meta http-equiv="Expires" content="-1"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="CreateballotDiv">
+	
+		<h1>${message:create-ballot}</h1><hr/>
+	
 		<t:zone t:id="generalZone" id="generalZone">
 			<t:if test="showGeneral">
 				
@@ -12,11 +15,24 @@
 					<t:if test="showBadName" zone="^">
 						${message:name-in-use}<br/>
 					</t:if>
-					<t:label for="ballotName">${message:name}*</t:label>
-					<t:textfield t:id="ballotName"/><br/>
-					<t:label for="description">${message:description}*</t:label>
-					<t:textarea t:id="description"></t:textarea>
-					
+					<table>
+						<tr>
+							<td>
+								<t:label for="ballotName">${message:name}*</t:label>
+							</td>
+							<td>
+								<t:textfield t:id="ballotName"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="description">${message:description}*</t:label>
+							</td>
+							<td>	
+								<t:textarea t:id="description"></t:textarea>
+							</td>
+						</tr>
+					</table>
 					
 					<br/><input t:type="submit" t:value="${message:next-but}"/>
 				</t:form>
@@ -32,37 +48,55 @@
 					<t:if test="showBadDate">
 						${message:bad-date}<br/>
 					</t:if>
-					<t:label for="methodSelect">${message:method}*</t:label>
-					<t:select t:type="select" t:id="methodSelect" value="method" t:blankLabel="Choose..." t:zone="^"/><br/>
-					<t:label for="ballotKindSelect">${message:Kind}*</t:label>
-					<t:select t:type="select" t:id="ballotKindSelect" value="ballotKind" t:blankLabel="Choose..." t:zone="^"/><br/>
-					<t:if test="showNormalCensus">
-						<t:if test="existCensus">
-							<t:label for="censusNormalSelect">${message:census}*</t:label>
-							<t:select t:type="select" t:id="censusNormalSelect" t:model="censusNormalModel" t:value="censusNormal" t:encoder="censusNormalEncoder" t:blankLabel="Choose..." t:zone="^"/><br/>
-							<t:label for="startDate"/>
-							<t:datefield t:id="startDate" format="prop:dateInFormatStr"/>(${dateInFormatStr})<br/>
-							<t:label for="startHour"/>
-							<t:textfield t:id="startHour"/>(hh:mm:ss)<br/>
-							<t:label for="endDate"/>*
-							<t:datefield t:id="endDate" format="prop:dateInFormatStr"/>(${dateInFormatStr})<br/>
-							<t:label for="endHour"/>
-							<t:textfield t:id="endHour"/>(hh:mm:ss)
-							<br/><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button>
-								 </t:eventlink><input t:type="submit" t:value="${message:next-but}"/>
+					<table>
+						<tr>
+							<td><t:label for="methodSelect">${message:method}*</t:label></td>
+							<td><t:select t:type="select" t:id="methodSelect" value="method" t:blankLabel="Choose..." t:zone="^"/></td>
+						</tr>
+						<tr>
+							<td><t:label for="ballotKindSelect">${message:Kind}*</t:label></td>
+							<td><t:select t:type="select" t:id="ballotKindSelect" value="ballotKind" t:blankLabel="Choose..." t:zone="^"/></td>
+						</tr>
+						<t:if test="showNormalCensus">
+							<t:if test="existCensus">
+								<tr>
+									<td><t:label for="censusNormalSelect">${message:census}*</t:label></td>
+									<td><t:select t:type="select" t:id="censusNormalSelect" t:model="censusNormalModel" t:value="censusNormal" t:encoder="censusNormalEncoder" t:blankLabel="Choose..." t:zone="^"/></td>
+								</tr>
+								<tr>
+									<td><t:label for="startDate"/></td>
+									<td><t:datefield t:id="startDate" format="prop:dateInFormatStr"/>(${dateInFormatStr})</td>
+								</tr>
+								<tr>
+									<td><t:label for="startHour"/></td>
+									<td><t:textfield t:id="startHour"/>(hh:mm:ss)</td>
+								</tr>
+								<tr>
+									<td><t:label for="endDate"/>*</td>
+									<td><t:datefield t:id="endDate" format="prop:dateInFormatStr"/>(${dateInFormatStr}</td>
+								</tr>
+								<tr>
+									<td><t:label for="endHour"/></td>
+									<td><t:textfield t:id="endHour"/>(hh:mm:ss)</td>
+								</tr>
+								<tr><td><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button>
+									 </t:eventlink><input t:type="submit" t:value="${message:next-but}"/></td>
+								</tr>
+								<p:else>
+									<tr>${message:no-census} <t:pagelink page="census/createCensus"><strong>${message:here-link}</strong></t:pagelink>
+									<t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink></tr>
+								</p:else>
+							</t:if>
 							<p:else>
-								${message:no-census} <t:pagelink page="census/createCensus"><strong>${message:here-link}</strong></t:pagelink>
-								<br/><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink>
+								<tr>
+									<td><t:label for="censusModel">${message:census}*</t:label></td>
+									<td><t:select t:type="select" t:id="censusModel" t:value="census" t:model="censusModel" t:blankOption="ALWAYS" t:blankLabel="Choose..."/></td>
+								</tr>
+								<tr><td><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink>
+									<input t:type="submit" value="${message:next-but}"/></td></tr>
 							</p:else>
 						</t:if>
-						<p:else>
-							<t:label for="censusModel">${message:census}*</t:label>
-							<t:select t:type="select" t:id="censusModel" t:value="census" t:model="censusModel" t:blankOption="ALWAYS" t:blankLabel="Choose..."/>
-							<br/><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink>
-								<input t:type="submit" value="${message:next-but}"/>
-						</p:else>
-					</t:if>
-					
+					</table>
 				</t:form>
 			</t:if>
 			
@@ -167,5 +201,5 @@
 			</t:if>
 		</t:zone>
 		
-	</t:border>
+	</div></t:border>
 </html>

@@ -1,10 +1,12 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="userlistdiv">
+			
+	
 			
 		<t:zone t:id="logedZone" id="logedZone">
-			<h1>${message:users-loged}</h1>
+			<h1>${message:users-loged}</h1><hr/>
 			<t:grid source="usersLoged" row="userLoged" add="kick" rowsperpage="15" inplace="true">
 				<p:kickcell>
 					<t:actionlink t:id="kickbut" context="userLoged.idSession" zone="^"><button>${message:kick-but}</button></t:actionlink>
@@ -12,7 +14,7 @@
 			</t:grid>
 		</t:zone>
 		<t:zone t:id="logZone" id="logZone">
-			<h1>${message:users-log}</h1>
+			<h1>${message:users-log}</h1><hr/>
 			<t:if test="main">
 				<t:form>
 					<label>${message:show-all}</label><input t:type="checkbox" t:id="showAll" value="showAll" onclick="this.form.submit()"/>
@@ -27,7 +29,7 @@
 			
 			
 			
-			
+	</div>	
 	</t:border>
 	
 		

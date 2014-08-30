@@ -1,8 +1,8 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
    <head><title>${message:page-title}</title></head>
-	<t:border>
+	<t:border><div id="contactDiv">
 
-    <titlelist>Grupo de investigación INPO</titlelist><br/>
+    <h1><titlelist>Grupo de investigación INPO</titlelist></h1><hr/>
 		<p class="methodtext">
 		Somos un grupo de investigadores que busca desarrollar herramientas
 informáticas on-line para la toma de decisiones participativas o la
@@ -17,6 +17,6 @@ choice).</p><br/>
 	
 
 
-    </t:border>
+    </div></t:border>
 
 </html>

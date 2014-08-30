@@ -1,7 +1,9 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <head><title>${message:page-title}</title></head>
 
-	<t:border>
+	<t:border><div id="censuslistdiv">
+		
+		<h1>${message:admin-census}</h1><hr/>
 		
 		<t:zone t:id="searchZone" id="searchZone">
 			<t:form t:id="searchForm" t:zone="censusGridZone">
@@ -37,5 +39,5 @@
 		</t:zone>
 		
 		
-	</t:border>
+	</div></t:border>
 </html>

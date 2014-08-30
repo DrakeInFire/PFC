@@ -1,10 +1,12 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="userListDiv">
+	
+		<h1>${message:userlist}</h1><hr/>
 		<t:zone t:id="nomailgrid" id="nomailgrid">
 			<t:if test="showNoMail">
-				<t:grid source="nomails" reorder="email,admin,maker" row="nomail" add="id,Edit,Delete" exclude="password,owner">
+				<t:grid source="nomails" reorder="email,admin,maker" row="nomail" add="Edit,Delete" exclude="password,owner">
 					<p:deletecell>
 						<t:if test="!editing">
 								<t:actionlink t:id="deletenomail" context="nomail.id" zone="^"><button>${message:delete-but}</button></t:actionlink>
@@ -20,7 +22,7 @@
 		</t:zone>
 		
 		<t:zone t:id="usergrid" id="usergrid">	
-			<t:grid source="users" reorder="email,admin,maker" row="user" add="id,Edit,Delete" exclude="password">
+			<t:grid source="users" reorder="email,owner,admin,maker" row="user" add="Edit,Delete" exclude="password">
 				<p:editcell>
 					<t:if test="!editing">
 						<t:if test="!owner">
@@ -133,7 +135,7 @@
 		</t:zone>
 		
 		
-	</t:border>
+	</div></t:border>
 	
 		
 			

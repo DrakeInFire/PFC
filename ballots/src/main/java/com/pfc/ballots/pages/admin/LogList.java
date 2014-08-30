@@ -34,7 +34,7 @@ public class LogList {
 
 	FactoryDao DB4O =FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
 	@Persist
-	LogDao logDao =DB4O.getLogDao();
+	LogDao logDao;
 	@Persist
 	UserLogedDao userLogedDao;
 	@InjectComponent
@@ -61,7 +61,7 @@ public class LogList {
 	
 	void setupRender()
 	{
-		
+		logDao =DB4O.getLogDao();
 		userLogedDao=DB4O.getUserLogedDao(datasession.getDBName());
 		userLogedDao.clearSessions(DataSession.SESSION_TIME);
 	}

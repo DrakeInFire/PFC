@@ -2,6 +2,9 @@
      <head><title>${message:page-title}</title></head>
    
 	<t:border>
+	<div id="showprofileDiv">
+	<h1>${message:my-profile}</h1><hr/>
+	
 	<infouser>
 	
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,5 +167,6 @@
 	 		</t:if>
 	 	</t:zone>
 	</infouser>
+	</div>
 	</t:border>
 </html>

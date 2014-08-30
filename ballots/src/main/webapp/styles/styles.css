@@ -116,11 +116,16 @@ languages
 #mainmenu
 {
 	display: block;
-	width: 900px;
+	/*width: 900px;*/
 	height: 35px;
 	padding: 0px;
 	margin-left: auto;
 	margin-right:auto;
+	
+	min-width: 900px;
+	position: absolute;
+	left: 36%;
+	z-index: 1;
 }
 
 #mainmenu li
@@ -312,12 +317,16 @@ mainposition
 {
 	display: block;
 	width: 82%;
-	float: right;
+	/*float: right;*/
+	float: left;
+	position: absolute;
+	left: 240px;
+	
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-top: 50px;
 	padding-top: 10px;
-	/*padding-bottom: 3px;*/
+	padding-bottom: 100px;
 	padding-left: 19px;
 }
 
@@ -357,7 +366,7 @@ infoUser
 {
 	display: block;
 	background: white;
-	margin-top: 9px;
+	margin-top: 25px;
 	margin-left: -3px;
 	margin-bottom: 10px;
 	border: 1px solid;
@@ -520,6 +529,30 @@ div .row
 	border-left: 2px solid #B91A1F;
 }
 
+div .indexRow
+{
+	display: block;
+	background-color: white;
+	min-height: 30px;
+	width: 100%;
+	margin-bottom: 10px;
+	box-shadow: 2px 2px 4px darkred;
+	border: 1px solid rgb(236, 202, 202);
+	padding: 5px;
+}
+
+div .indexRow:hover
+{
+	/*background-color: rgba(219, 154, 154,0.7);*/
+	background-color: rgba(255,0,0,0.1);
+}
+
+.indexRow>span {
+display: inline-block;
+width: 30%;
+color: black;
+}
+
 div .row span
 {
 	display:inline-block;
@@ -533,17 +566,6 @@ div .row span
 	margin-right:30px;
 	text-align:center;
 }
-
-/*.thtop
-{
-	border: 1px solid;
-}
-
-.tdbot
-{
-	border: 1px solid;
-	border-color: #FF0000;
-}*/
 
 
 .tst
@@ -572,4 +594,98 @@ div.outtst div.t-zone
 {
 	
 	height: 30px;
+}
+
+#CreateCensusDiv>h1
+{
+	color:#8c1116;
+	margin-left:0px;
+}
+
+#CreateCensusDiv label
+{
+	width:initial;	
+}
+
+#CreateballotDiv>h1
+{
+	color:#8c1116;
+	margin-left:0px;
+}
+
+#CreateballotDiv label
+{
+	width:initial;	
+}
+
+#CreateballotDiv #typeZone
+{
+	background-color:#F5F5F5;
+}
+
+
+#resultballotDiv table
+{
+	margin-top:25px;
+	border-collapse:collapse;
+	text-align:center;
+	width:50%;
+}
+
+#resultballotDiv table td
+{
+	background-color:lightblue;
+	padding:10px;
+}
+
+#resultballotDiv #chart_div
+{
+	border: 1px solid;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	background-color: white;
+}
+
+#resultballotDiv h2
+{
+	text-align:left;
+	margin-bottom:25px;
+	margin-top:25px;
+}
+
+#resultballotDiv h1 
+{
+	color: #8c1116;
+}
+#showprofileDiv h1
+{
+	color: #8c1116;
+}
+
+#ballotlistDiv h1
+{
+	color: #8c1116;
+}
+hr
+{
+	margin-bottom:25px;
+}
+#censuslistDiv h1
+{
+	color: #8c1116;
+}
+#userlistDiv h1
+{
+	color:#8c1116; 
+}
+#companyDiv h1
+{
+	color:#8c1116; 
+}
+#adminmailDiv h1
+{
+	color:#8c1116;	
+}
+#contactDiv h1
+{
+	color:#8c1116;	
 }

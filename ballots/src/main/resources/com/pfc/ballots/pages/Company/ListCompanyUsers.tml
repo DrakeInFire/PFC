@@ -1,8 +1,9 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="userlistDiv">
 	
+		<h1>${message:company-users}</h1><hr/>
 		<!--  
 	  	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /////////////////////////////////////////////////// GRID ZONE //////////////////////////////////////////////////
@@ -11,7 +12,7 @@
 		
 		<t:zone t:id="userGridZone" id="userGridZone">	
 			<t:if test="!showSure">
-				<t:grid source="users" row="user" add="Edit,Delete,makeOwner" exclude="password,plainpass,owner,lastlog">
+				<t:grid source="users" row="user" add="Edit,Delete,makeOwner" exclude="password,owner,lastlog">
 					<p:deleteCell>
 						<t:if test="!editing">
 							<t:if test="!owner">
@@ -143,5 +144,5 @@
 			</t:if>
 		</t:zone>	
 	
-	</t:border>
+	</div></t:border>
 </html>

@@ -1,12 +1,9 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title></head>
    
-	<t:border>
+	<t:border><div id="userlistdiv">
 	
-
-
-
-	<h1>${message:add-by-file} </h1>
+	<h1>${message:add-by-file}</h1><hr/>
 		
 		${message:example-file}
 		<t:eventlink t:event="returnstreamresponse">${message:here}</t:eventlink><br/><br/>
@@ -21,7 +18,7 @@
 			
 		<t:zone t:id="gridZone" id="gridZone">
 			<t:if test="fileupload">
-				<t:grid source="persons" row="person" add="ID,Edit,Avalible,Add" exclude="owner,lastLog,regDate,plainpass" reorder="ID,Avalible" rowsperpage="10" inplace="true">
+				<t:grid source="persons" row="person" add="ID,Edit,Avalible,Add" exclude="owner,lastLog,regDate" reorder="ID,Avalible" rowsperpage="10" inplace="true">
 					<p:idcell>
 						${person.id }
 					</p:idcell>
@@ -152,7 +149,7 @@
 			</t:if>
 		</t:zone>
 			
-	</t:border>
+	</div></t:border>
 	
 		
 			

@@ -11,17 +11,7 @@
 					<t:if test="!showCurrent">
 						${message:no-ballots}
 					</t:if>
-					
-					
-					
-					<t:if test="showCurrent">
-						 <table>
-							 <tr><th>Todas</th></tr>
-							 <t:loop t:source="currentBallots" t:value="ballot">
-									<tr><td>Nombre->${ballot.name}</td></tr>
-							</t:loop>
-						</table>
-					</t:if>
+				
 					<t:if test="showNotStarted">
 						<table>
 					 		 <tr><th>No empezadas</th></tr>
@@ -30,21 +20,64 @@
 						 	 </t:loop>
 					 	</table>
 					</t:if>
-					<t:if test="showActive">
-						<table>
-							 <tr><th>Activas</th></tr>
+			
+					
+				 <!--  <t:if test="showActive">
+						Activas
 							 <t:loop t:source="activeBallots" t:value="ballot">
-									<tr><td><t:actionlink t:id="voteBallot" t:context="ballot.id"> Nombre->${ballot.name}</t:actionlink></td></tr>
+							 <div class="row">
+								<span><t:actionlink t:id="voteBallot" t:context="ballot.id"> Nombre->${ballot.name}</t:actionlink>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							
+								 <t:if test="ballot.teaching">
+										<span>Docente&nbsp;&nbsp;&nbsp;</span>
+										<p:else>
+											<span>Normal&nbsp;&nbsp;&nbsp;</span>
+										</p:else>
+								</t:if>
+								 <span>${metodo}&nbsp;&nbsp;&nbsp;</span>
+							 </div>
 							</t:loop>
-						</table>
+						
 					</t:if>
-					<t:if test="showEnded">
-						<table>
-							 <tr><th>Terminadas</th></tr>
-							 <t:loop t:source="endedBallots" t:value="ballot">
-									<tr><td><t:actionlink t:id="resultBallot" context="ballot.id">Nombre->${ballot.name}</t:actionlink></td></tr>
+					-->
+					
+					<t:if test="showActive">
+						Activas<br/>
+							 <t:loop t:source="activeBallots" t:value="ballot">
+							 <div t:type="actionlink" t:id="voteBallot" t:context="ballot.id" class="indexRow">
+								<span> Nombre->${ballot.name}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							
+								 <t:if test="ballot.teaching">
+										<span>Docente&nbsp;&nbsp;&nbsp;</span>
+										<p:else>
+											<span>Normal&nbsp;&nbsp;&nbsp;</span>
+										</p:else>
+								</t:if>
+								 <span>${metodo}&nbsp;&nbsp;&nbsp;</span>
+								 <br/>
+							 </div>
 							</t:loop>
-						</table>
+						
+					</t:if>
+					
+					<t:if test="showEnded">
+							
+							 Terminadas<br/>
+							 <t:loop t:source="endedBallots" t:value="ballot">
+							 	 <div t:type="actionlink" t:id="resultBallot" context="ballot.id" class="indexRow" >
+									<span>Nombre->${ballot.name}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								
+								<t:if test="ballot.teaching">
+										<span>Docente&nbsp;&nbsp;&nbsp;</span>
+										<p:else>
+											<span>Normal&nbsp;&nbsp;&nbsp;</span>
+										</p:else>
+								</t:if>
+								 <span>${metodo}&nbsp;&nbsp;&nbsp;</span>
+								 <br/>
+								 </div>
+							</t:loop>
+						
 					</t:if>
 				</div>
 			</p:else>
