@@ -11,7 +11,7 @@
 		   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 		   
 		   
-		<t:zone t:id="newEmailZone" id="newEmailZone" t:update="show" t:update="show">
+		<t:zone t:id="newEmailZone" id="newEmailZone" t:update="show">
 			<t:if test="showNewZone">
 				<h1>${message:no-mail}</h1>
 				<t:form t:id="newForm" zone="^">

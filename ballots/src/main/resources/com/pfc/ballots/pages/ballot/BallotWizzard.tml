@@ -92,8 +92,10 @@
 									<td><t:label for="censusModel">${message:census}*</t:label></td>
 									<td><t:select t:type="select" t:id="censusModel" t:value="census" t:model="censusModel" t:blankOption="ALWAYS" t:blankLabel="Choose..."/></td>
 								</tr>
-								<tr><td><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink>
-									<input t:type="submit" value="${message:next-but}"/></td></tr>
+								<tr>
+									<td><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink></td>
+									<td><input t:type="submit" value="${message:next-but}"/></td>
+								</tr>
 							</p:else>
 						</t:if>
 					</table>
