@@ -1,0 +1,28 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<t:border>
+
+	<h1>${ballot.name}</h1><hr/>
+			<h3>${ballot.description}</h3><br/>
+			<!--///////////////////////////////////  MAYORIA RELATIVA /////////////////////////////////////////// -->			
+			<t:if test="showRelativeMajority">
+				 <table>		 
+					 <t:form t:id="relativeMajorityForm">
+					 	<t:radiogroup t:value="relMayVote" t:id="radioGroup" >
+					 	<table>
+							<tr t:type="Loop" t:source="relMay.options" t:value="relMayOption">
+								<td><input type="radio" t:type="radio" t:value="${relMayOption}" />${relMayoption}</td>
+							</tr>
+						</table>
+					 	</t:radiogroup>
+					 	<script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6Le_suISAAAAADfjVCf7iIiZ4gzRavZCv24iHQng">
+							</script>
+					 	<input t:type="submit" value="${message:vote-but}"/>
+					 </t:form>
+				 </table>
+		
+			</t:if>
+
+	</t:border>
+		
+</html>

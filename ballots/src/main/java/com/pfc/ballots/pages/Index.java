@@ -153,7 +153,7 @@ public class Index
 		public Object onActionFromVoteBallot(String id)
 		{
 			contextBallotId=id;
-			return VoteBallot.class;
+			return Kaptchatest.class;
 		}
 		
 		@SessionAttribute
