@@ -1,0 +1,22 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+     <head><title>${message:page-title}</title></head>
+   
+	<t:border><div id="voteDiv">
+
+ <form t:type='form' t:id='myForm'>
+ 
+ 
+   <div t:type='recaptcha' publickey='my_public_key'
+        privatekey='my_private_key' valid='captchaValid'></div>
+ 
+ 
+</form>
+
+
+
+	</div>
+
+
+	</t:border>
+</html>
+	

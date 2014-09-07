@@ -33,5 +33,8 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/mario/Downloads/tapestry-kaptcha-5.3.1.jar.zip"/>
+	<classpathentry kind="lib" path="/home/mario/Downloads/kaptcha-2.3.2.zip"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/recaptcha4j-0.0.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
