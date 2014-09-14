@@ -70,6 +70,7 @@ public class CreateProfile {
 	 */
 	void setupRender() 
 	{
+		
 		dao=DB4O.getUsuarioDao(datasession.getDBName());
 		censedInDao=DB4O.getProfileCensedInDao(datasession.getDBName());
 		if(!isnotFirstTime)
@@ -79,7 +80,12 @@ public class CreateProfile {
 		}
 		else if(!isnotPassOk && !isnotAvalible)
 		{
-			componentResources.discardPersistentFieldChanges();
+			//componentResources.discardPersistentFieldChanges();
+			//profile=new Profile();
+		}
+		if(profile==null || !badCaptcha || isnotPassOk || isnotAvalible)
+		{
+			System.out.println("ALALAL");
 			profile=new Profile();
 		}
 		Random r=new Random();
@@ -175,9 +181,9 @@ public class CreateProfile {
 			System.out.println("Nonull");
 			componentResources.discardPersistentFieldChanges();
 			
-			return Index.class;
+			return ProfileStored.class;
 		}
-		System.out.println("null");
+		
 		return null;
 		
 			

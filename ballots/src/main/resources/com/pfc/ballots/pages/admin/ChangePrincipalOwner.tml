@@ -1,12 +1,12 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <head><title>${message:page-title}</title>
-     <link rel="icon" type="image/x-icon" href="${context:favicon2.ico}"/>
-	<link rel="icon" href="${context:favicon2.ico}" type="image/x-icon"/>
+     	<link rel="icon" type="image/x-icon" href="${context:favicon2.ico}"/>
+		<link rel="icon" href="${context:favicon2.ico}" type="image/x-icon"/>
 	</head>
    
 	<t:border><div id="showprofileDiv">
 		
-		<h1>page-title</h1><hr/>
+		<h1>${message:page-title}</h1><hr/>
 	
 		<t:zone t:id="userGridZone" id="userGridZone" t:update="show">
 			<t:if test="!showSure">
@@ -14,6 +14,30 @@
 					<p:makeOwnerCell>
 						<t:actionlink t:id="makeOwnerBut" context="user.id" zone="^"><button>${message:make-owner}</button></t:actionlink>
 					</p:makeOwnerCell>
+					<p:adminCell>
+						<t:if test="user.admin">
+							<img src="${asset:context:/layout/tickv.png}" />
+							<p:else>
+								<img src="${asset:context:/layout/tickx.png}" />
+							</p:else>
+						</t:if>
+					</p:adminCell>
+					<p:makerCell>
+						<t:if test="user.maker">
+							<img src="${asset:context:/layout/tickv.png}" />
+							<p:else>
+								<img src="${asset:context:/layout/tickx.png}" />
+							</p:else>
+						</t:if>
+					</p:makerCell>
+					<p:studentCell>
+						<t:if test="user.student">
+							<img src="${asset:context:/layout/tickv.png}" />
+							<p:else>
+								<img src="${asset:context:/layout/tickx.png}" />
+							</p:else>
+						</t:if>
+					</p:studentCell>
 				</t:grid>
 			</t:if>
 		</t:zone>
@@ -25,7 +49,7 @@
 				<t:actionlink t:id="isSureBut" zone="^"><button>${message:yes}</button></t:actionlink>
 				<t:actionlink t:id="notSureBut" zone="^"><button>${message:no}</button></t:actionlink>
 			</t:if>
-		</div></t:zone>
+		</t:zone></div>
 		
 	</t:border>
 </html>

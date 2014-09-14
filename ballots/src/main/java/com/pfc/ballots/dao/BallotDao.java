@@ -18,6 +18,7 @@ public interface BallotDao {
 	public List<Ballot> retrieveAllSort();
 	public Ballot getById(String id);
 
+	public List<String> getIdByCensusId(String idCensus);
 	public List<Ballot> getById(List<String> ids);
 	public List<Ballot> getById(List<String> ids,List<Ballot> nonActive,List<Ballot> active,List<Ballot> ended);
 	public List<Ballot> getById(List<String> ids,List<Ballot> nonActive,List<Ballot> active,List<Ballot> ended,int num);

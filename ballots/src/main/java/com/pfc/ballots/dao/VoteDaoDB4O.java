@@ -85,6 +85,37 @@ public class VoteDaoDB4O implements VoteDao {
 			close();
 		}
 	}
+	public void addVotes(List<String> idsUser,List<String> idsBallot)
+	{
+		open();
+		try
+		{
+			for(String idBallot:idsBallot)
+			{
+				for(String idUser:idsUser)
+				{
+					Vote temp=new Vote();
+					temp.setIdBallot(idBallot);
+					temp.setIdUser(idUser);
+					
+					ObjectSet result=DB.queryByExample(temp);
+					if(!result.hasNext())
+					{
+						temp.setCounted(false);
+						DB.store(temp);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+	}
 	//******************************************** getters*********************************************//
 	/**
 	 * Retrieves the votes of a ballot from its id
@@ -289,6 +320,45 @@ public class VoteDaoDB4O implements VoteDao {
 			close();
 		}
 		
+	}
+	/**
+	 * Deletes a the votes of a list of users of a list of ballots
+	 * @Param List<string> idUser list of user to delete their votes
+	 * @Param List<String idBalot list of ballots where is going to delete the votes
+	 */
+	public void deleteVotesNotDone(List<String> idsUser,List<String> idsBallot)
+	{
+		open();
+		try
+		{
+			for(String idBallot:idsBallot)
+			{
+				for(String idUser:idsUser)
+				{
+					Vote temp=new Vote();
+					temp.setIdBallot(idBallot);
+					temp.setIdUser(idUser);
+					ObjectSet result=DB.queryByExample(temp);
+					if(result.hasNext())
+					{
+						temp=(Vote)result.next();
+						if(temp.isCounted()==false)
+						{
+							DB.delete(temp);
+						}
+					}
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
 	}
 	//********************************************Open and Close DB************************************//
 	/**

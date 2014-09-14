@@ -300,7 +300,8 @@ public class ShowBallotAdmin {
 	*/
 	public Object onActivate()
 	{
-		switch(datasession.sessionState())
+		return Index.class;
+		/*switch(datasession.sessionState())
 		{
 			case 0:
 				return Index.class;
@@ -312,7 +313,7 @@ public class ShowBallotAdmin {
 				return SessionExpired.class;
 			default:
 				return Index.class;
-		}
+		}*/
 		
 	}
 }

@@ -1,5 +1,7 @@
 package com.pfc.ballots.pages.profile;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.tapestry5.ComponentResources;
@@ -21,6 +23,7 @@ import com.pfc.ballots.dao.ProfileCensedInDao;
 import com.pfc.ballots.dao.UserDao;
 import com.pfc.ballots.dao.UserLogedDao;
 import com.pfc.ballots.data.DataSession;
+import com.pfc.ballots.data.Sex;
 import com.pfc.ballots.entities.Census;
 import com.pfc.ballots.entities.Company;
 import com.pfc.ballots.entities.Profile;
@@ -159,6 +162,26 @@ public class ShowProfile {
 			ajaxResponseRenderer.addRender("userDataZone", userDataZone).addRender("areuSureZone",areuSureZone);
 		}
 	}
+	
+	public String getSex()
+	{
+		if(profile.getSex()==Sex.HOMBRE)
+		{
+			return "Hombre";
+		}
+		if(profile.getSex()==Sex.MUJER)
+		{
+			return "Mujer";
+		}
+		return "";
+		
+	}
+	public String getFechaNac()
+	{
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		return format.format(profile.getFechaNac());
+	}
+	
 	
 	
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

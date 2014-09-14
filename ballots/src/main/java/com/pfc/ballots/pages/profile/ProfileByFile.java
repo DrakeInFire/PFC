@@ -24,10 +24,12 @@ import org.apache.tapestry5.upload.services.UploadedFile;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.services.Response;
 
+import com.pfc.ballots.dao.EmailAccountDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.ProfileCensedInDao;
 import com.pfc.ballots.dao.UserDao;
 import com.pfc.ballots.data.DataSession;
+import com.pfc.ballots.entities.EmailAccount;
 import com.pfc.ballots.entities.Profile;
 import com.pfc.ballots.entities.ProfileCensedIn;
 import com.pfc.ballots.pages.Index;
@@ -35,6 +37,7 @@ import com.pfc.ballots.pages.SessionExpired;
 import com.pfc.ballots.pages.UnauthorizedAttempt;
 import com.pfc.ballots.pages.admin.AdminMail;
 import com.pfc.ballots.util.Encryption;
+import com.pfc.ballots.util.Mail;
 import com.pfc.ballots.util.ManipulateFiles;
 import com.pfc.ballots.util.UUID;
 
@@ -74,6 +77,7 @@ public class ProfileByFile {
 	FactoryDao DB4O =FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
 	UserDao userDao=null;
 	ProfileCensedInDao censedInDao=null;
+	EmailAccountDao emailDao=null;
 	
 	
 	
@@ -472,6 +476,7 @@ public class ProfileByFile {
 				
 				censedInDao.store(censedIn);
 				userDao.store(temp);
+				sendMail(temp.getId());
 			}
 			else
 			{
@@ -506,14 +511,48 @@ public class ProfileByFile {
 		ProfileCensedIn censedIn=new ProfileCensedIn(temp.getId());
 		censedInDao.store(censedIn);
 		userDao.store(temp);
-		
+		sendMail(temp.getId());
 		if(request.isXHR())
 		{
 			ajaxResponseRenderer.addRender(editZone).addRender(gridZone);
 		}
 	}
 
-	
+	/**
+	 * Report a users that are able to vote in the created ballot
+	 * @param censo
+	 * @param ballotMail
+	 */
+	private void sendMail (String idUser)
+	{
+		userDao=DB4O.getUsuarioDao(datasession.getDBName());
+		emailDao=DB4O.getEmailAccountDao();
+		String emailDestino=userDao.getEmailById(idUser);
+		Profile nuevoUser=userDao.getProfileById(idUser);
+		EmailAccount account=emailDao.getAccount();
+		
+		
+		
+		String subject;
+		String txt;
+		
+		if(access==null)
+		{
+			subject="Votaciones Usal alta";
+			txt="Usted ha sido dado de alta en la pagina web Votaciones usal<br/> Su nombre de usuario es "+emailDestino+"<br/>"
+					+ "Para obtener su contraseña, solicitela en ¿Olvidó contraseña? y se la mandaremos a su correo electrónico"; 
+		}
+		else
+		{
+			subject="Votaciones Usal alta";
+			txt="Usted ha sido dado de alta en la pagina web Votaciones usal<br/> Su nombre de usuario es "+emailDestino+"<br/>"
+					+ "Para obtener su contraseña, solicitela en ¿Olvidó contraseña? y se la mandaremos a su correo electrónico";
+		}
+		
+
+		
+		Mail.sendMail(account.getEmail(), account.getPassword(), emailDestino, subject, txt);
+	}
 	
 	private Profile lookforid(String id)
 	{

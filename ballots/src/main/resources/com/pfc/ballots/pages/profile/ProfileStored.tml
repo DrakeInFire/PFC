@@ -1,0 +1,14 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+     <meta http-equiv="refresh" content="5; URL=/ballots/Index"/>
+     <head><title>${message:page-title}</title>
+     <link rel="icon" type="image/x-icon" href="${context:favicon2.ico}"/>
+
+	<link rel="icon" href="${context:favicon2.ico}" type="image/x-icon"/>
+	</head>
+   
+	<t:border><div id="voteDiv">
+				<p><h3>${message:profile-stored}</h3></p>
+	
+	
+	</div></t:border>
+</html>

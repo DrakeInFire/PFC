@@ -28,7 +28,15 @@
 		<div id="chart_div"></div>
 		
 		
+		
+		
 		<t:if test="showRelMay">
+			<table border="1px">
+				<tr>
+					<td>${message:numVotes}</td>
+					<td>${relMayNum}</td>
+				</tr>
+			</table>
 			<table border="1px">
 				<tr><th>${message:option}</th><th>${message:votes}</th></tr>
 				<t:loop t:source="relMay.options" t:value="option">
@@ -42,7 +50,13 @@
 		
 		<t:if test="showKemeny">
 			<table border="1px">
-				<tr><th>${message:permutation}</th><th>${message:votes}</th></tr>
+				<tr>
+					<td>${message:numVotes}</td>
+					<td>${kemNum}</td>
+				</tr>
+			</table>
+			<table border="1px">
+				<tr><th>${message:permutation}</th><th>${message:score}</th></tr>
 				<t:loop t:source="kemeny.permutations" t:value="permutation">
 					<tr>
 						<td>${permutation}</td><td>${kemenyVote}</td>
@@ -53,7 +67,13 @@
 		
 		<t:if test="showBorda">
 			<table border="1px">
-				<tr><th>${message:option}</th><th>${message:votes}</th></tr>
+				<tr>
+					<td>${message:numVotes}</td>
+					<td>${bordaNum}</td>
+				</tr>
+			</table>
+			<table border="1px">
+				<tr><th>${message:option}</th><th>${message:score}</th></tr>
 				<t:loop t:source="borda.bordaOptions" t:value="bordaOpt">
 					<tr>
 						<td>${bordaOpt}</td><td>${bordaVote}</td>
@@ -63,7 +83,21 @@
 		</t:if>
 		<t:if test="showRange">
 			<table border="1px">
-				<tr><th>${message:option}</th><th>${message:votes}</th></tr>
+				<tr>
+					<td>${message:numVotes}</td>
+					<td>${rangeNum}</td>
+				</tr>
+				<tr>
+					<td>${message:maxValue}</td>
+					<td>${maxValue}</td>
+				</tr>
+				<tr>
+					<td>${message:minValue}</td>
+					<td>${minValue}</td>
+				</tr>
+			</table>
+			<table border="1px">
+				<tr><th>${message:option}</th><th>${message:score}</th></tr>
 				<t:loop t:source="range.options" t:value="rangeOpt">
 					<tr>
 						<td>${rangeOpt}</td><td>${rangeVote}</td>

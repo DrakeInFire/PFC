@@ -77,8 +77,8 @@
 	   			<br/>
 	   			<infouser>
 	   				<h3>${message:about-us}</h3><hr/>
-	   				${message:change-about}: <img src="${asset:context:/layout/images/edit.png}" /><br/>
-	   				${message:default-about}: <button>${message:default-but}</button><br/>
+	   				${message:change-about}: <t:actionlink t:id="editAboutBut" t:zone="^"><img src="${asset:context:/layout/images/edit.png}" /></t:actionlink><br/>
+	   				${message:default-about}:<t:actionlink t:id="defaultText"><button>${message:default-but}</button></t:actionlink><br/>
 	   			</infouser>
 			</t:if>
 		</t:zone>
@@ -165,9 +165,6 @@
 	   			</t:form>
 	   			</infouser>
 	   			
-	   			
-	   			
-	   			
 	   		</t:if>
 	   </t:zone>
 	   <t:zone t:id="areusureZone">
@@ -179,6 +176,34 @@
 	   			</infouser>
 	   		</t:if>
 	   </t:zone>
+	   
+	   
+	   <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ////////////////////////////////////////////////////// ABOUT TEXT ////////////////////////////////////////////////////////////////////////
+	   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<t:zone t:id="aboutZone" id="aboutZone" t:update="show">
+		<t:if test="showAbout">
+			<infouser>
+			<h3>${message:about-us}</h3><hr/>
+			<t:form t:id="aboutForm" t:zone="^">
+			<table>
+				<tr>
+					<td><t:label for="head"/></td>
+					<td><t:textfield t:id="head"/></td>
+				</tr>
+				<tr>
+					<td><t:label for="aboutText"/></td>
+					<td><t:textArea t:id="aboutText" class="areaText"/></td>
+				</tr>
+				<tr>
+					<td><label><t:actionlink t:id="backBut" t:zone="^"><button>${message:cancel}</button></t:actionlink></label></td>
+					<td><input t:type="submit" t:value="${message:submit-but}"/></td>
+				</tr>
+			</table>
+			</t:form>
+			</infouser>
+		</t:if>
+	</t:zone>
 	
 	</div></t:border>
 </html>

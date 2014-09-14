@@ -12,12 +12,15 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.pfc.ballots.dao.AboutTextDao;
 import com.pfc.ballots.dao.EmailAccountDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.UserDao;
 import com.pfc.ballots.data.DataSession;
+import com.pfc.ballots.entities.AboutText;
 import com.pfc.ballots.entities.EmailAccount;
 import com.pfc.ballots.entities.Profile;
+import com.pfc.ballots.pages.About;
 import com.pfc.ballots.pages.Index;
 import com.pfc.ballots.pages.SessionExpired;
 import com.pfc.ballots.pages.UnauthorizedAttempt;
@@ -37,7 +40,7 @@ public class AdminMail {
 
 	
   	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 //////////////////////////////////////////////////// GENERAL STUFF //////////////////////////////////////////////////////////////////
+	 //////////////////////////////////////////////////////// DAO ///////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	FactoryDao DB4O=FactoryDao.getFactory(FactoryDao.DB4O_FACTORY);
@@ -45,6 +48,12 @@ public class AdminMail {
 	UserDao userDao;
 	@Persist
 	EmailAccountDao emailAccountDao;
+	@Persist 
+	AboutTextDao aboutDao;
+
+	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 //////////////////////////////////////////////////// GENERAL STUFF //////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@SessionState
 	private DataSession datasession;
@@ -84,6 +93,7 @@ public class AdminMail {
 		emailAccountDao=DB4O.getEmailAccountDao();
 		userDao=DB4O.getUsuarioDao();
 		emailAccount=emailAccountDao.getAccount();
+		aboutDao=DB4O.getAboutTextDao();
 		emailform=new EmailAccount();
 		settings=false;
 		change=false;
@@ -91,6 +101,7 @@ public class AdminMail {
 		badMatch=false;
 		badServer=false;
 		changeAccount=false;
+		showAbout=false;
 		badCombination=false;
 	}
 	
@@ -563,7 +574,69 @@ public class AdminMail {
 		}
 	}
 	
+	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 //////////////////////////////////////////////////////// SHOW ABOUT /////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	@InjectComponent
+	private Zone aboutZone;
+	
+	@Persist
+	@Property
+	private boolean showAbout;
+	
+	@Persist
+	@Property
+	private String aboutText;
+	@Persist
+	@Property
+	private String head;
+	
+	public void onActionFromEditAboutBut()
+	{
+		if(request.isXHR())
+		{
+			AboutText temp=aboutDao.getAboutText();
+			if(temp!=null)
+			{
+				aboutText=temp.getText();
+				head=temp.getHead();
+			}
+			showAbout=true;
+			settings=true;
+			ajaxResponseRenderer.addRender("aboutZone",aboutZone).addRender("emailSettingsZone",emailSettingsZone);
+		}
+	}
+	
+	public Object onSuccessFromAboutForm()
+	{
+		if(request.isXHR())
+		{
+			AboutText temp=new AboutText();
+			temp.setText(aboutText);
+			temp.setHead(head);
+			aboutDao.updateAboutText(temp);
+			showAbout=false;
+			settings=false;
+			return About.class;
+		}
+		return null;
+	}
+	public void onActionFromBackBut()
+	{
+		if(request.isXHR())
+		{
+			showAbout=false;
+			settings=false;
+			ajaxResponseRenderer.addRender("aboutZone",aboutZone).addRender("emailSettingsZone",emailSettingsZone);
+		}
+	}
+	public Object onActionFromDefaultText()
+	{
+		aboutDao.deleteAboutText();
+		return About.class;
+		
+	}
 	
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 /////////////////////////////////////////////////////// ON ACTIVATE /////////////////////////////////////////////////////////////

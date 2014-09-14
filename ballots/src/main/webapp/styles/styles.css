@@ -112,7 +112,12 @@ div#lenguages>a{
 	text-align: justify;
 }
 
-
+.areaText
+{
+	margin: 2px;
+	width: 500px;
+	height: 110px;
+}
 
 .error
 {
@@ -201,7 +206,7 @@ body .leftcolumn
 /* my menu (user or admin menu) */
 #mymenu
 {
-	width: 300 px;
+	width: 10%;
 	display: block;
 	margin-top: 21px;
 	margin-left: -30px;
@@ -328,7 +333,7 @@ text-decoration: none;
 mainposition
 {
 	display: block;
-	width: 82%;
+	width: 80%;
 	/*float: right;*/
 	float: left;
 	position: absolute;

@@ -120,7 +120,37 @@ public class BallotDaoDB4O implements BallotDao{
 		}
 		return null;
 	}
-	
+
+	public List<String> getIdByCensusId(String idCensus)
+	{
+		List<String> list=new LinkedList<String>();
+		open();
+		try
+		{
+			Query query =DB.query();
+			query.constrain(Ballot.class);
+			if(idCensus!=null)
+			{
+				query.descend("idCensus").constrain(idCensus).endsWith(false);
+				ObjectSet result=query.execute();
+				while(result.hasNext())
+				{
+					Ballot x=(Ballot) result.next();
+					list.add(x.getId());
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			close();
+		}
+		return list;
+	}
 	
 	/**
 	 * Retrieves all ballots from their ids
@@ -177,7 +207,8 @@ public class BallotDaoDB4O implements BallotDao{
 				{query.descend("id").constrain(example.getId()).endsWith(false);}
 			if(example.getIdOwner()!=null)
 			{query.descend("idOwner").constrain(example.getIdOwner()).endsWith(false);}
-			
+			if(example.getIdCensus()!=null)
+			{query.descend("idCensus").constrain(example.getIdCensus()).endsWith(false);}
 			if(example.getMethod()!=null)
 			{query.descend("method").constrain(example.getMethod());}
 			if(example.isEnded())

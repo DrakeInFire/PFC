@@ -62,7 +62,7 @@ import com.pfc.ballots.util.UUID;
  * @version 1.0 JUN-2014
  */
 
-public class BallotWizzard {
+public class CreateBallot {
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 //////////////////////////////////////////////////// GENERAL STUFF //////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,11 +143,11 @@ public class BallotWizzard {
 	}
 	public void initializeBooleans()
 	{
-		showGeneral=true;
+		showGeneral=false;
 		showErrorGeneral=false;
 		showBadName=false;
 		
-		showType=false;
+		showType=true;
 		showNormalCensus=false;
 		showBadDate=false;
 		showErrorType=false;
@@ -198,34 +198,7 @@ public class BallotWizzard {
 	//@Validate("minLength=20")
 	private String description;
 
-	/**
-	 * Check if the Ballot name is in use and give access 
-	 * to the next zone of the wizard
-	 */
-	public void onSuccessFromGeneralForm()
-	{
-		if(request.isXHR())
-		{
-			if(ballotName==null|| description==null)
-			{
-				showErrorGeneral=true;
-			}
-			else
-			{
-				if(ballotDao.isNameInUse(ballotName))
-				{
-					showBadName=true;
-				}
-				else
-				{
-					showErrorGeneral=false;
-					showGeneral=false;
-					showType=true;
-				}
-			}
-			ajaxResponseRenderer.addRender("generalZone", generalZone).addRender("typeZone", typeZone);
-		}
-	}
+	
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///////////////////////////////////////////////////// Type ZONE /////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,6 +249,13 @@ public class BallotWizzard {
 	@Property
 	@Persist
 	private Census censusNormal;
+	
+	@Property
+	@Persist
+	private String numVotes;
+	
+	
+	
 	public CensusEncoder getCensusNormalEncoder()
 	{
 	  return new CensusEncoder(censuses);
@@ -467,7 +447,7 @@ public class BallotWizzard {
 		}
 		else if(ballotKind==BallotKind.DOCENTE)
 		{
-			System.out.println("DOCNETE");
+			
 			if(census==null)
 			{
 				showErrorType=true;
@@ -479,6 +459,17 @@ public class BallotWizzard {
 		
 	}
 	
+	public boolean isTeaching()
+	{
+		if(ballotKind==BallotKind.DOCENTE)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	public boolean isShowPublic()
 	{
@@ -495,7 +486,29 @@ public class BallotWizzard {
 	{
 		if(request.isXHR())
 		{
-			if(ballotKind==BallotKind.SENSIBLE)
+			if(ballotName==null|| description==null)
+			{
+				showErrorGeneral=true;
+				
+			}
+			else
+			{
+				if(ballotDao.isNameInUse(ballotName))
+				{
+					showBadName=true;
+				}
+				else
+				{
+					showErrorGeneral=false;
+					showGeneral=false;
+				}
+			}
+			if(showErrorGeneral || showBadName)
+			{
+				ajaxResponseRenderer.addRender("typeZone", typeZone);
+			}
+			
+			else if(ballotKind==BallotKind.SENSIBLE)
 			{
 				ajaxResponseRenderer.addRender("typeZone", typeZone);
 			}
@@ -504,25 +517,32 @@ public class BallotWizzard {
 			else
 			{
 				
-				showType=false;
-				if(method==Method.MAYORIA_RELATIVA)
+				if(!valueOk(census))
 				{
+					ajaxResponseRenderer.addRender("typeZone", typeZone);
+				}
+				else if(method==Method.MAYORIA_RELATIVA)
+				{
+					showType=false;
 					showMayRel=true;
 					//options=new ArrayList<String>();options.add("1");options.add("2");
 					ajaxResponseRenderer.addRender("typeZone", typeZone).addRender("mayRelZone",mayRelZone);
 				}
 				else if(method==Method.KEMENY)
 				{
+					showType=false;
 					showKemeny=true;
 					ajaxResponseRenderer.addRender("typeZone", typeZone).addRender("kemenyZone",kemenyZone);
 				}
 				else if(method==Method.BORDA)
 				{
+					showType=false;
 					showBorda=true;
 					ajaxResponseRenderer.addRender("typeZone", typeZone).addRender("bordaZone", bordaZone);
 				}
 				else if(method==Method.RANGE_VOTING)
 				{
+					showType=false;
 					showRange=true;
 					ajaxResponseRenderer.addRender("typeZone", typeZone).addRender("rangeZone",rangeZone);
 				}
@@ -531,6 +551,38 @@ public class BallotWizzard {
 			}
 		}
 		
+		
+	}
+	
+	@Persist
+	@Property
+	private boolean badValue;
+	
+	public boolean valueOk(String num)
+	{
+		if(ballotKind==BallotKind.DOCENTE)
+		{
+			if(isNumeric(num))
+			{
+				if(Integer.parseInt(num) < 100000)
+				{
+					return true;
+				}
+				else
+				{
+					badValue=true;
+					return false;
+				}
+			}
+			else
+			{
+				badValue=true;
+				return false;
+			}
+		}
+		else{
+			return true;
+		}
 		
 	}
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1915,8 +1967,7 @@ public class BallotWizzard {
 	 */
 		public Object onActivate()
 		{
-			return Index.class;
-		/*	switch(datasession.sessionState())
+			switch(datasession.sessionState())
 			{
 				case 0:
 					return Index.class;
@@ -1933,7 +1984,7 @@ public class BallotWizzard {
 				default:
 					return Index.class;
 			}
-			*/
+			
 		}
 	
 }

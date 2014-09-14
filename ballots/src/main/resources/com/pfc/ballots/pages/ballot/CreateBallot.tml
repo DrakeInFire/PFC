@@ -10,34 +10,10 @@
 		<t:zone t:id="generalZone" id="generalZone" t:update="show">
 			<t:if test="showGeneral">
 				
-				<t:form t:id="generalForm" zone="^">
-					<t:if test="showErrorGeneral">
-						<div class="error">${message:fill-fields}<br/></div>
-					</t:if>
-					<t:if test="showBadName" zone="^">
-						<div class="error">${message:name-in-use}<br/></div>
-					</t:if>
-					<table>
-						<tr>
-							<td>
-								<t:label for="ballotName">${message:name}*</t:label>
-							</td>
-							<td>
-								<t:textfield t:id="ballotName"/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<t:label for="description">${message:description}*</t:label>
-							</td>
-							<td>	
-								<t:textarea t:id="description"></t:textarea>
-							</td>
-						</tr>
-					</table>
+				
 					
-					<br/><input t:type="submit" t:value="${message:next-but}"/>
-				</t:form>
+					
+				
 			</t:if>
 		</t:zone>
 		
@@ -53,6 +29,13 @@
 						<t:if test="showBadDate">
 							${message:bad-date}<br/>
 						</t:if>
+						
+					<t:if test="showBadName" zone="^">
+						<div class="error">${message:name-in-use}<br/></div>
+					</t:if>
+					<t:if test="badValue">
+						<span class="error">${message:badValue}</span><br/>
+					</t:if>
 					</span>
 					<table>
 						<tr>
@@ -62,6 +45,22 @@
 						<tr>
 							<td><t:label for="ballotKindSelect">${message:Kind}*</t:label></td>
 							<td><t:select t:type="select" t:id="ballotKindSelect" value="ballotKind" t:blankLabel="${message:choose}" t:zone="^"/></td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="ballotName">${message:name}*</t:label>
+							</td>
+							<td>
+								<t:textfield t:id="ballotName"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="description">${message:description}*</t:label>
+							</td>
+							<td>	
+								<t:textarea t:id="description"></t:textarea>
+							</td>
 						</tr>
 						<t:if test="showNormalCensus">
 							<t:if test="showExist">
@@ -103,14 +102,23 @@
 								</p:else>
 							</t:if>
 							<p:else>
-								<tr>
-									<td><t:label for="censusModel">${message:census}*</t:label></td>
-									<td><t:select t:type="select" t:id="censusModel" t:value="census" t:model="censusModel" t:blankOption="ALWAYS" t:blankLabel="${message:choose}"/></td>
-								</tr>
-								<tr>
-									<td><t:eventlink t:event="back" t:context="prop:['fromType','toGeneral']" t:zone="^"><button>${message:back-but}</button></t:eventlink></td>
-									<td><input t:type="submit" value="${message:next-but}"/></td>
-								</tr>
+								<t:if test="teaching"> 
+									<tr>
+										<td><t:label for="numVotes"/></td>
+										<td><t:textfield t:id="numVotes" t:value="census"/></td>
+										
+									</tr>
+									<p:else>
+										<tr>	
+											<td><t:label for="censusModel">${message:census}*</t:label></td>
+											<td><t:select t:type="select" t:id="censusModel" t:value="census" t:model="censusModel" t:blankOption="ALWAYS" t:blankLabel="${message:choose}"/></td>
+										</tr>
+									</p:else>
+								</t:if>
+									<tr>
+										<td></td>
+										<td><input t:type="submit" value="${message:next-but}"/></td>
+									</tr>
 							</p:else>
 						</t:if>
 					</table>

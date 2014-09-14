@@ -24,5 +24,7 @@ public interface VoteDao {
 	
 	public void updateVote(Vote vote);
 	public void deleteVoteOfBallot(String idBallot);
+	public void deleteVotesNotDone(List<String> idUser,List<String> idBallot);
+	public void addVotes(List<String> idUser,List<String> idBallot);
 	
 }

@@ -3,6 +3,8 @@ package com.pfc.ballots.entities;
 
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.tapestry5.beaneditor.NonVisual;
@@ -302,10 +304,27 @@ public class Profile {
 			return false;
 		}
 		
+		if(this.getSex()==null && profile.getSex()==null)
+		{
+			
+		}			
+		else if(this.getSex()==null && profile.getSex()!=null)
+		{
+			return false;
+		}
+		else if(this.getSex()!=null && profile.getSex()==null)
+		{
+			return false;
+		}
+		else if(this.getSex()!=profile.getSex())
+		{
+			return false;
+		}
+		
 		//University Check
 		if(this.getUniversity()==null && profile.getUniversity()==null)
 		{
-			
+			//Si no se introduce esta condicion y los 2 son null, dara una excepcion
 		}			
 		else if(this.getUniversity()==null && profile.getUniversity()!=null)
 		{
@@ -319,6 +338,7 @@ public class Profile {
 		{
 			return false;
 		}
+		
 		
 		//City Check
 		
@@ -443,7 +463,31 @@ public class Profile {
 			{
 				return false;
 			}
-		return true;
+			
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			
+			
+			if(this.getFechaNac()==null && profile.getFechaNac()==null)
+			{
+				
+			}
+			else if(this.getFechaNac()==null && profile.getFechaNac()!=null)
+			{
+				return false;
+			}
+			else if(this.getFechaNac()!=null && profile.getFechaNac()==null)
+			{
+				return false;
+			}
+			else if(!format.format(this.getFechaNac()).equals(format.format(profile.getFechaNac())))
+			{
+				return false;
+			}
+	
+			
+			return true;
+		
+		
 	}
 	public Date getFechaNac() {
 		return fechaNac;

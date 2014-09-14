@@ -51,6 +51,10 @@
 						<td>${profile.lastname }</td>
 					</tr>
 					<tr>
+						<td>${message:sex}:</td>
+						<td>${sex}</td>
+					</tr>
+					<tr>
 						<td>${message:city}:</td>
 						<td>${profile.city }</td>
 					</tr>
@@ -69,7 +73,7 @@
 					</tr>
 					<tr>
 						<td>${message:fechaNac-label}:</td>
-						<td>${profile.fechaNac}</td>
+						<td>${fechaNac}</td>
 					</tr>
 					<tr>
 						<td>${message:address-label}:</td>
@@ -176,6 +180,10 @@
 	 					<tr>
 	 						<td><t:label for="lastfield"/></td>
 	 						<td><t:textfield t:id="lastField" value="update.lastname"/></td>
+	 					</tr>
+	 					<tr>
+	 						<td><t:label for="selectSex"/></td>
+	 						<td><t:Select t:id="selectSex" t:value="update.sex" /></td>
 	 					</tr>
 	 					<tr>
 	 						<td><t:label for="cityfield"/></td>

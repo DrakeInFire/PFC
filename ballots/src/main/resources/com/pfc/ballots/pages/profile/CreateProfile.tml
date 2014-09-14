@@ -21,7 +21,7 @@
 	   						<span class="error">${message:bad-security}</span>
 	   					</t:if>
 						
-				<t:beaneditform t:id="form" submitlabel="${message:send-but}" object="profile" add="repeat,captcha" reorder="email,password,repeat" exclude="">
+				<t:beaneditform t:id="form" submitlabel="${message:send-but}" object="profile" add="repeat,captcha" reorder="email,password,repeat" exclude="admin,owner,maker">
 					
 					<p:email>
 						<t:label for="email"/>

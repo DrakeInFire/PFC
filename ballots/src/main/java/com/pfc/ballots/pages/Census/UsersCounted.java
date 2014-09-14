@@ -16,11 +16,14 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.pfc.ballots.dao.BallotDao;
 import com.pfc.ballots.dao.CensusDao;
 import com.pfc.ballots.dao.FactoryDao;
 import com.pfc.ballots.dao.ProfileCensedInDao;
 import com.pfc.ballots.dao.UserDao;
+import com.pfc.ballots.dao.VoteDao;
 import com.pfc.ballots.data.DataSession;
+import com.pfc.ballots.entities.Ballot;
 import com.pfc.ballots.entities.Census;
 import com.pfc.ballots.entities.Profile;
 import com.pfc.ballots.pages.Index;
@@ -63,6 +66,8 @@ public class UsersCounted {
 	UserDao userDao;
 	@Persist
 	ProfileCensedInDao censedInDao;
+	BallotDao ballotDao;
+	VoteDao voteDao;
 	
 	  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 /////////////////////////////////////////////// BUILDER AND SETUP ///////////////////////////////////////////////////////////
@@ -619,6 +624,12 @@ public class UsersCounted {
 		old.calcDifference(census, added, removed);
 		censedInDao.addAndRemoveIds(old.getId(), added, removed);
 		censusDao.update(census);
+		ballotDao=DB4O.getBallotDao(datasession.getDBName());
+		List<String> idBallot=ballotDao.getIdByCensusId(census.getId());
+		System.out.println("SIZE"+idBallot.size());
+		voteDao=DB4O.getVoteDao(datasession.getDBName());
+		voteDao.addVotes(added, idBallot);
+		voteDao.deleteVotesNotDone(removed, idBallot);
 	}
 	
 	

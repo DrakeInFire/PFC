@@ -4,14 +4,21 @@
 	<link rel="icon" href="${context:favicon2.ico}" type="image/x-icon"/></head>
 	<t:border><div id="contactDiv">
 
+    <t:if test="showDefault">
     <h1><titlelist>Grupo de investigación INPO</titlelist></h1><hr/>
 		<p class="methodtext">
-		Somos un grupo de investigadores que busca desarrollar herramientas
-informáticas on-line para la toma de decisiones participativas o la
-consulta de opiniones. El grupo busca integrar los estudios de ciencia
-política centrados en la elección social, con los estudios de informática
-aplicada para la toma de decisiones colectivas(computational social
-choice).Nos encontrara en <a href="http://inpo.usal.es">http://inpo.usal.es</a></p><br/>
+				Somos un grupo de investigadores que busca desarrollar herramientas
+		informáticas on-line para la toma de decisiones participativas o la
+		consulta de opiniones. El grupo busca integrar los estudios de ciencia
+		política centrados en la elección social, con los estudios de informática
+		aplicada para la toma de decisiones colectivas(computational social
+		choice).Nos encontrara en <a href="http://inpo.usal.es">http://inpo.usal.es</a></p><br/>
+	<p:else>
+		<h1><titlelist>${about.head}</titlelist></h1><hr/>
+		<p class="methodtext">
+				${about.text}</p><br/>
+	</p:else>
+	</t:if>
 
 
 <p>Copyright&copy; 2014</p>

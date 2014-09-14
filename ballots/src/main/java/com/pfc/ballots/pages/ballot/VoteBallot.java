@@ -82,6 +82,10 @@ public class VoteBallot {
 	@Property
     @SessionAttribute
 	private String contextBallotId;
+	
+	@SessionAttribute
+	private String contextResultBallotId;
+	
 	@SessionAttribute
 	private Map<String,List<String>>publicVotes;
 	
@@ -262,8 +266,8 @@ public class VoteBallot {
 				}
 			}
 		
-		
-		return Index.class;
+		contextResultBallotId=contextBallotId;
+		return VoteCounted.class;
 	}
 	public boolean isShowRelativeMajority()
 	{
@@ -379,7 +383,8 @@ public class VoteBallot {
 			}
 		}
 		
-		return Index.class;//SUSTITUIR POR INDEX
+		contextResultBallotId=contextBallotId;
+		return VoteCounted.class;
 	}
 	
 	public boolean isShowKemeny()
@@ -492,7 +497,8 @@ public class VoteBallot {
 			}
 		}
 		
-		return Index.class;
+		contextResultBallotId=contextBallotId;
+		return VoteCounted.class;
 	}
 	public boolean isShowBorda()
 	{
@@ -751,7 +757,8 @@ public class VoteBallot {
 				}
 				
 			}
-			return Index.class;
+			contextResultBallotId=contextBallotId;
+			return VoteCounted.class;
 		}
 		/////////////////////////////////////////////////// TOOLS //////////////////////////
 		
