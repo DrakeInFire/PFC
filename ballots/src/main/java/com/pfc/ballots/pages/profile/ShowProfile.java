@@ -379,7 +379,7 @@ public class ShowProfile {
 			
 			igual=update.equals(profile);
 			
-			if(!igual)
+			 if(!igual)
 			{
 				System.out.println("CHANGED");
 				

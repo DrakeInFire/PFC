@@ -76,7 +76,8 @@ public class ManipulateFiles {
 							}
 						else 
 						{
-								temp.setEmail(eElement.getElementsByTagName("firstName").item(0).getTextContent()+"0@nomail.com");	
+								temp.setEmail(removerAcentos(eElement.getElementsByTagName("firstName").item(0).getTextContent().trim().replaceAll(" ", ""))+"0@nomail.com");
+								
 						}
 						if(eElement.getElementsByTagName("university").getLength()!=0)
 							{temp.setUniversity(eElement.getElementsByTagName("university").item(0).getTextContent());}
@@ -204,4 +205,12 @@ public class ManipulateFiles {
 			
 		
 	}
+	 	private static String conAcentos = "áéíóúÁÉÍÓÚ";
+	    private static String sinAcentos = "aeiouAEIOU";
+
+	    private static String removerAcentos(String s) {
+	        for (int i = 0; i < conAcentos.length(); i++)
+	            s = s.replace(conAcentos.charAt(i), sinAcentos.charAt(i));
+	        return s;
+	    }
 }

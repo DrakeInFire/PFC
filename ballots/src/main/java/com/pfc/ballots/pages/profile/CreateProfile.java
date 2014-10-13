@@ -85,7 +85,6 @@ public class CreateProfile {
 		}
 		if(profile==null || !badCaptcha || isnotPassOk || isnotAvalible)
 		{
-			System.out.println("ALALAL");
 			profile=new Profile();
 		}
 		Random r=new Random();

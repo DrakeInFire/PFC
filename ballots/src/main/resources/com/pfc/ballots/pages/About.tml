@@ -12,7 +12,7 @@
 		consulta de opiniones. El grupo busca integrar los estudios de ciencia
 		política centrados en la elección social, con los estudios de informática
 		aplicada para la toma de decisiones colectivas(computational social
-		choice).Nos encontrara en <a href="http://inpo.usal.es">http://inpo.usal.es</a></p><br/>
+		choice). Nos encontrará en <a href="http://inpo.usal.es">http://inpo.usal.es</a></p><br/>
 	<p:else>
 		<h1><titlelist>${about.head}</titlelist></h1><hr/>
 		<p class="methodtext">

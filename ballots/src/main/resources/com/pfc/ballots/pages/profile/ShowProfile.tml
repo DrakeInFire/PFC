@@ -169,6 +169,10 @@
 	 			<t:form t:id="updateForm" zone="^">
 	 				<table>
 	 					<tr>
+	 						<td><t:label for="ownerfield"/></td>
+	 						<td><t:checkbox t:id="ownerfield" value="update.owner"/></td>
+	 					</tr>
+	 					<tr>
 	 						<td><t:label for="emailfield"/></td>
 	 						<td><t:textfield t:id="emailField" value="update.email"/></td>
 	 						<td><t:if test="badMail">Email en uso</t:if></td>

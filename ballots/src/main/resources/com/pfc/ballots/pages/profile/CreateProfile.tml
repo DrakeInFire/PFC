@@ -8,6 +8,7 @@
 	
 		<h1>${message:create-profile}</h1><hr/>
 		<infouser>
+		<br/>
 						<t:if test="badCaptcha">
 							<span class="error">${message:badCaptcha}</span>
 						</t:if>
